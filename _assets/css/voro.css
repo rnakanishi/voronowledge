@@ -1,85 +1,15 @@
 /*Focal Point by Pixelaritypixelarity.com | hello@pixelarity.comLicense: pixelarity.com/license*/
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, abbr, acronym, address, big, cite,
+code, del, dfn, em, img, ins, kbd,
+q, s, samp, small, strike, strong, sub, sup,
+tt, var, b, u, i, center, dl, dt, dd, ol, ul,
+li, fieldset, form, label, legend, table, caption, tbody, tfoot,
+thead, tr, th, td, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup, menu, nav, output,
+ruby, section, summary, time, mark, audio,
 video {
     margin: 0;
     padding: 0;
@@ -89,16 +19,8 @@ video {
     vertical-align: baseline;
 }
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav,
 section {
     display: block;
 }
@@ -117,10 +39,8 @@ q {
     quotes: none;
 }
 
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
     content: '';
     content: none;
 }
@@ -1249,6 +1169,11 @@ ul.contact li {
     display: inline-block;
     margin: 0 0.25em;
     font-size: 1.2em;
+    text-align: center;
+}
+ul.contact p {
+    margin: 0 0.25em;
+    font-size: 0.8em;
 }
 
 ul.contact li span {
@@ -1520,6 +1445,54 @@ ul.contact li a:active:before {
         color: #FFF;
         font-weight: 600;
     }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        z-index: 1;
+
+        background: #555;
+        border-radius: 8px;
+        padding: 1.25em 0 1.1em 0;
+        min-width: 14em;
+        text-align: left;
+        font-size: 0.8em;
+        margin-top: 1.5em;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        color: #fff;
+    }
+    .dropdown:before {
+        content: '';
+        display: block;
+        border-bottom: solid 1em #555;
+        border-left: solid 1em transparent;
+        border-right: solid 1em transparent;
+        position: absolute;
+        top: -0.85em;
+        left: 50%;
+        margin-left: -1em;
+    }
+    .dropdown a,
+    .dropdown span {
+        -moz-transition: color 0.25s ease-in-out;
+        -webkit-transition: color 0.25s ease-in-out;
+        -ms-transition: color 0.25s ease-in-out;
+        transition: color 0.25s ease-in-out;
+        display: block;
+        padding: 0.75em 1.5em 0.75em 1.5em;
+        color: #ccc;
+        text-decoration: none;
+        border-top: solid 1px #666;
+    }
+
     .homepage #nav {
         position: absolute;
         display: block;
@@ -1537,15 +1510,8 @@ ul.contact li a:active:before {
         font-size: 1em;
         border-radius: 0 0 5px 5px;
     }
-    .dropotron {
-        background: #555;
-        border-radius: 8px;
-        padding: 1.25em 0 1.1em 0;
-        min-width: 14em;
-        text-align: left;
-    }
-    .dropotron a,
-    .dropotron span {
+    .dropdown a,
+    .dropdown span {
         -moz-transition: color 0.25s ease-in-out;
         -webkit-transition: color 0.25s ease-in-out;
         -ms-transition: color 0.25s ease-in-out;
@@ -1556,19 +1522,30 @@ ul.contact li a:active:before {
         text-decoration: none;
         border-top: solid 1px #666;
     }
-    .dropotron li:hover>a,
-    .dropotron li:hover>span {
+    .dropdown li:hover>a,
+    .dropdown li:hover>span {
         color: #fff;
     }
-    .dropotron li:first-child>a,
-    .dropotron li:first-child>span {
+    li:hover > ul {
+    display: block;
+    opacity: 0;
+    z-index: 98;
+    position: absolute;
+    -webkit-animation: fadein 2s; /* Safari and Chrome */
+    -moz-animation: fadein 2s; /* Firefox */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera */
+    animation: fadein 2s;
+}
+    .dropdown li:first-child>a,
+    .dropdown li:first-child>span {
         border-top: 0;
     }
-    .dropotron.level-0 {
+    .dropdown.level-0 {
         font-size: 0.8em;
         margin-top: 1.5em;
     }
-    .dropotron.level-0:before {
+    .dropdown.level-0:before {
         content: '';
         display: block;
         border-bottom: solid 1em #555;
@@ -1747,6 +1724,25 @@ ul.contact li a:active:before {
         background: #3f3f3f;
         border-radius: 0px 0px 5px 5px;
         color: #FFF;
+    }
+
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 }
 
