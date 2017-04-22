@@ -17,7 +17,7 @@ title: Voronowledge
 email: your-email@domain.com
 description: > # this means to ignore newlines until "baseurl:"
   An awesome description :D
-baseurl: "/voronowledge/" # the subpath of your site, e.g. /blog
+baseurl: "/voronowledge" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_rnaka:  RNakanishi
 github_filipe:  FilipeCN
@@ -32,7 +32,7 @@ collections:
   posts:
     output:   true
 
-include: ["_pages","_assets"]
+include: ["_pages","_assets",".nojekyll"]
 exclude:      ["Gemfile", "Gemfile.lock"]
 # Build settings
 markdown: kramdown
