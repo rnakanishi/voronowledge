@@ -5,6 +5,3 @@
 layout: home
 
 ---
-PLOPLOPLOPLOPLO
-
-TESTEEE

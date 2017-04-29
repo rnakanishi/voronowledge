@@ -42,7 +42,7 @@ gems:
 
 assets:
   sources:
-      - "_assets/css"
+      - "assets/css"
       - _assets/images
       - _assets/javascripts
       - _assets/stylesheets
