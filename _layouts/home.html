@@ -1,111 +1,28 @@
+<!DOCTYPE html>
 <html>
+    {% include head.html %}
 
-{% include head.html %}
-
-<body>
-    <div id="banner-header">
-        <div id="homepage-banner">
-            <div id="home-logo" class="4u -4u">
-                <span class="pennant">
-                    <img src="{{site.baseurl}}/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
-                </span>
-                <h1>{{ site.title }}</h1>
-            </div>
-
-            <div class="banner-wrapper">
-                <nav id="homepage-nav" class="nav">
-                    <ul>
-                        <li><a href="{{site.baseurl}}/index.html">Home</a></li>
-                        <li class="dropdown"><a href="{{site.baseurl}}/blog.html">Dropdown</a>
-                            <div class="dropdown-content">
-                                <ul>
-                                    <li><a>Lorem ipsum dolor</a></li>
-                                    <li><a>Phasellus consequat</a></li>
-                                    <li><a>Magna phasellus</a></li>
-                                    <li><a>Etiam dolore nisl</a></li>
-                                    <li><a>Veroeros feugiat</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <!-- <li><a href="{{site.baseurl}}/index.html">Portfolio</a></li> -->
-                        <li><a href="{{site.baseurl}}/about.html">About</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-
-    <div class="homepage">
-        <div id="page-wrapper">
-            <div>
-
-                <div id="banner-wrapper" class="wrapper">
-                    <section id="banner" class="6u -3u">
-
-                        {{ content }}
-
-                    </section>
-                </div>
-                {% include footer.html %}
+    <body>
+        <div id="banner-header">
+            <div id="homepage-banner">
+                {% include banner.html %}
             </div>
         </div>
 
-    </div>
-</body>
+        <div id="featured">
+            <div class="container">
+                <header>
+                    <h1> {{page.title}} </h1>
+                </header>
+                <section class="8u -2u">
 
+                    {{ content }}
+
+                </section>
+            </div>
+
+        </div>
+
+        {% include footer.html %}
+    </body>
 </html>
-
-<!--
-<div class="wrapper">
-    <section id="portfolio-preview">
-        <header>
-            <h2>Our Work</h2><span class="byline">Senectus netus turpis egestas</span></header>
-        <div class="row">
-            <div class="4u 12u(mobile)">
-                <a class="image fit" style="cursor: pointer; outline: 0px;"><img src="/assets/images/pic01.jpg" alt=""></a>
-            </div>
-            <div class="4u 12u(mobile)">
-                <a class="image fit" style="cursor: pointer; outline: 0px;"><img src="/assets/images/pic01.jpg" alt=""></a>
-            </div>
-            <div class="4u 12u(mobile)">
-                <a class="image fit" style="cursor: pointer; outline: 0px;"><img src="/assets/images/pic01.jpg" alt=""></a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="4u 12u(mobile)">
-                <a class="image fit" style="cursor: pointer; outline: 0px;"><img src="/assets/images/pic01.jpg" alt=""></a>
-            </div>
-            <div class="4u 12u(mobile)">
-                <a class="image fit" style="cursor: pointer; outline: 0px;"><img src="/assets/images/pic01.jpg" alt=""></a>
-            </div>
-            <div class="4u 12u(mobile)">
-                <a class="image fit" style="cursor: pointer; outline: 0px;"><img src="/assets/images/pic01.jpg" alt=""></a>
-            </div>
-        </div>
-        <footer><a class="button button-alt" style="cursor: pointer;">Full Portfolio</a></footer>
-    </section>
-</div>
-<div class="wrapper">
-    <div id="highlights">
-        <div class="row">
-            <div class="6u 12u(mobile)">
-                <section class="first">
-                    <header>
-                        <h2>Magna Feugiat Lorem</h2><span class="byline">Sed tempus lorem etiam turpis egestas</span></header>
-                    <p>Lorem ipsum Integer lacinia turpis egestas dui luctus sed lacinia diam sollicitudin. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.turpis egestas dui luctus sed lacinia diam sollicitudin
-                        lorem sed habitant morbi.</p>
-                    <footer><a class="button" style="cursor: pointer;">Learn More</a></footer>
-                </section>
-            </div>
-            <div class="6u 12u(mobile)">
-                <section>
-                    <header>
-                        <h2>Lectus dui habitant</h2><span class="byline">Sed tempus lorem etiam turpis egestas</span></header>
-                    <p>Lorem ipsum Integer lacinia turpis egestas dui luctus sed lacinia diam sollicitudin. Pellentesque habitant morbi tristique senectus et netus et malesuada fames.turpis egestas dui luctus sed lacinia diam sollicitudin
-                        lorem sed habitant morbi.</p>
-                    <footer><a class="button" style="cursor: pointer;">Learn More</a></footer>
-                </section>
-            </div>
-        </div>
-    </div>
-</div> -->

@@ -1,8 +1,8 @@
 ---
-layout: home
+layout: page
 title:  "Welcome to Jekyll!"
-date:   2017-04-21 18:57:07 +0000
-categories: jekyll update
+tags: [tutorial, jekyll]
+summary: First post. Testing purposes
 ---
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
