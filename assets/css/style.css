@@ -4,8 +4,9 @@ hr {
     margin: 6em 0 0 0;
     padding: 6em 0 0 0;
 }
+
 body, input, textarea, select {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Raleway', 'Roboto', sans-serif;
     font-size: 100%;
     font-weight: 300;
     line-height: 1.75em;
@@ -28,7 +29,6 @@ header {
 hr {
     padding: 0 8em 0 8em;
 }
-
 
 .icon {
     text-decoration: none;
@@ -63,6 +63,7 @@ ul.contact li {
     font-size: 1.2em;
     text-align: center;
 }
+
 ul.contact p {
     margin: 0 0.25em;
     font-size: 0.8em;
@@ -113,6 +114,7 @@ header {
     position: relative;
     display: inline-block;
 }
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -123,8 +125,7 @@ header {
     min-width: 14em;
     text-align: left;
     font-size: 0.8em;
-
-    margin-left: -2em;
+    margin-left: -3.5em;
 }
 
 .dropdown-content a {
@@ -141,13 +142,78 @@ header {
     color: #DDD;
     border-radius: 5px;
     text-align: center;
-
     /*color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;*/
 }
+
 .dropdown:hover .dropdown-content {
     display: block;
 }
-.dropdown-content a:hover {background-color: #888}
+
+.dropdown-content a:hover {
+    background-color: #888
+}
+
+.image {
+    display: block;
+}
+
+.image img {
+    display: block;
+    width: 100%;
+}
+
+.image.featured {
+    display: block;
+    width: 100%;
+    margin: 0 0 2em 0;
+}
+
+.image.full {
+    display: block;
+    width: 100%;
+    margin-bottom: 2em;
+}
+
+.image.square {
+    display: block;
+    width: 100%;
+    margin-bottom: 2em;
+}
+
+.image.medium {
+    margin: auto;
+    width: 75%;
+    text-align: center;
+}
+
+.image.small {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+.image.circle {
+    margin: auto;
+    width: 100%;
+    display: block;
+    border-radius: 50%;
+    margin-bottom: 2em;
+}
+
+.image.left {
+    float: left;
+    margin: 0 2em 2em 0;
+}
+
+.image.centered {
+    display: block;
+    margin: 0 0 2em 0;
+}
+
+.image.centered img {
+    margin: 0 auto;
+    width: auto;
+}
