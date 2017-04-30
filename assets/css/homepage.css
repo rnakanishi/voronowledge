@@ -1,8 +1,11 @@
-
 @import url('https://fonts.googleapis.com/css?family=Vidaloka');
 
 /*********************************************************************************/
+
+
 /* Header                                                                        */
+
+
 /*********************************************************************************/
 
 #banner-header {
@@ -25,7 +28,6 @@
     background: url(../images/header.png) no-repeat bottom center;
     background-attachment: fixed;
     background-size: cover;
-
     -moz-backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
@@ -35,25 +37,26 @@
     -ms-transition: -ms-transform 0.5s ease;
     transition: transform 0.5s ease;
     padding-bottom: 1px;
-
     padding: 3em 7em 0 7em;
     overflow: hidden;
     text-align: center;
 }
-#homepage-banner:before{
+
+#homepage-banner:before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(64, 64, 64, 0.125);
+    /*background: rgba(64, 64, 64, 0.125);*/
 }
 
 #homepage-banner h2 {
     margin-bottom: 1.5em;
     font-size: 1.5em;
 }
+
 #homepage-banner p {
     font-size: 1.1em;
     margin: 0;
@@ -63,25 +66,33 @@
     padding: 2em 0 0 0;
 }
 
+
 /*********************************************************************************/
+
+
 /* Logo                                                                          */
+
+
 /*********************************************************************************/
-#home-logo {
+
+#homepage-banner section{
+    margin: auto;
+    min-width: 300px;
     position: relative;
     z-index: 1;
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding-top: 4em;
+    padding-bottom: 3em;
     background-color: #FFF;
 }
 
-#home-logo h1 {
+#homepage-banner h1 {
     font-size: 2.5em;
     font-family: 'Vidaloka', serif;
     font-weight: 800;
     color: #000;
 }
 
-#home-logo h2 {
+#homepage-banner h2 {
     display: block;
     text-decoration: none;
     font-weight: 200;
@@ -92,7 +103,7 @@
     margin: 0 0 0.125em 0;
 }
 
-#home-logo h3 {
+#homepage-banner h3 {
     display: block;
     text-decoration: none;
     font-weight: 100;
@@ -101,63 +112,76 @@
     margin: 0 0 0.125em 0;
 }
 
-#home-logo a {
-    display: block;
+#homepage-banner a {
+    font-size: 120%;
     text-decoration: none;
-    font-weight: 100;
-    line-height: 1em;
-    font-size: 5em;
-    color: #222;
-    letter-spacing: -0.05em;
     margin: 0 0 0.125em 0;
 }
 
-#home-logo span {
+#homepage-banner span {
     font-size: 1.4em;
     color: #222;
 }
 
-#homepage-nav {
+/*********************************************************************************/
+
+
+/* Nav                                                                          */
+
+
+/*********************************************************************************/
+
+#homepage-banner nav {
+    z-index: 1;
     position: absolute;
+    padding-bottom: 1em;
     background-color: #FFF;
     display: block;
     top: 0;
     left: 0;
     width: 100%;
     text-align: center;
-}
-#homepage-nav>ul>li {
-    margin: 0 0.25em !important;
-}
-#homepage-nav>ul>li>a,
-#homepage-nav>ul>li>span {
-    padding: 1em 1.5em;
-    font-size: 1em;
-    border-radius: 0 0 5px 5px;
+    font-size: 100%;
 }
 
 .nav {
+    position: absolute;
+    padding-bottom: 1em;
+    background-color: #FFF;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+
     position: absolute;
     right: 0;
     top: 0.5em;
     cursor: default;
 }
+
 .nav>ul {
     display: inline-block;
 }
+
 .nav>ul>li {
+    margin: 0 0.25em !important;
     display: inline-block;
     text-align: center;
     margin-left: 0.5em;
 }
-.nav>ul>li>ul {
-    display: none;
-}
-.nav>ul>li:first-child {
+/*
+.nav>ul>li>ul:hover {
+    display: block;
+}*/
+
+/*.nav>ul>li:first-child {
     margin-left: 0;
-}
-.nav>ul>li>a,
-.nav>ul>li>span {
+}*/
+
+.nav>ul>li>a, .nav>ul>li>span {
+    /*padding: 0.5em 1.5em 0.5em 1.5em;*/
+
     -moz-transition: background-color 0.25s ease-in-out;
     -webkit-transition: background-color 0.25s ease-in-out;
     -ms-transition: background-color 0.25s ease-in-out;
@@ -171,17 +195,95 @@
     color: #555;
     border-radius: 5px;
 }
-.nav>ul>li:hover>a,
-.nav>ul>li:hover>span {
+
+.nav>ul>li:hover>a, .nav>ul>li:hover>span {
     background: #E5E5E5;
 }
-.nav>ul>li.active>a,
-.nav>ul>li.active>span {
+
+.nav>ul>li.active>a, .nav>ul>li.active>span {
     background: #E5E5E5;
 }
-.nav>ul>li.current_page_item>a,
-.nav>ul>li.current_page_item>span {
+
+.nav>ul>li.current_page_item>a, .nav>ul>li.current_page_item>span {
     background: #555;
     color: #FFF;
     font-weight: 600;
+}
+
+/*********************************************************************************/
+
+
+/* Featured                                                                      */
+
+
+/*********************************************************************************/
+
+#featured {
+    position: relative;
+    text-align: center;
+    color: #555;
+        padding: 2em 0 0 0 ;
+        margin: 2em 0 1em 0;
+}
+
+#featured h1{
+    color: #444;
+        display: block;
+        font-size: 2.5em;
+}
+
+#featured h3 {
+    display: block;
+    font-weight: 300;
+}
+
+#featured .pennant {
+    font-size: 4em;
+}
+
+#featured .button {
+    margin-top: 1.5em;
+}
+
+/*********************************************************************************/
+
+
+/* Footer                                                                      */
+
+
+/*********************************************************************************/
+
+#footer {
+    border-top: solid 2px #ddd;
+    padding: 2em 0 0 0 ;
+    margin: 6em 0 4em 0;
+    font-size: 1em;
+    color: #888;
+    text-align: center;
+}
+
+#footer:after {
+    padding-bottom: 6em;
+}
+
+#footer h1, h2{
+    overflow: hidden;
+    text-align: center;
+    color: #666;
+    display: block;
+    font-size: 2em;
+}
+
+#footer h1 {
+    font-weight: 600;
+}
+
+#footer h2 {
+    font-weight: 400;
+}
+
+#copyright {
+    text-align: center;
+    color: #aaa;
+    border-top: 2px solid #e5e5e5;
 }

@@ -7,7 +7,7 @@
         <div id="homepage-banner">
             <div id="home-logo" class="4u -4u">
                 <span class="pennant">
-                    <img src="/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
+                    <img src="{{site.baseurl}}/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
                 </span>
                 <h1>{{ site.title }}</h1>
             </div>
@@ -16,7 +16,7 @@
                 <nav id="homepage-nav" class="nav">
                     <ul>
                         <li><a href="{{site.baseurl}}/index.html">Home</a></li>
-                        <li class="dropdown"><a href="{{site.baseurl}}/index.html">Dropdown</a>
+                        <li class="dropdown"><a href="{{site.baseurl}}/blog.html">Dropdown</a>
                             <div class="dropdown-content">
                                 <ul>
                                     <li><a>Lorem ipsum dolor</a></li>
@@ -40,9 +40,9 @@
             <div>
 
                 <div id="banner-wrapper" class="wrapper">
-                    <section id="banner">
+                    <section id="banner" class="6u -3u">
 
-                        {{ page.content }}
+                        {{ content }}
 
                     </section>
                 </div>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    {% include head.html %}
+
+    <body>
+        <div id="banner-header">
+            <div id="homepage-banner">
+                <section class="4u -4u">
+                    <span class="pennant">
+                        <img src="{{site.baseurl}}/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
+                    </span>
+                    <h1>{{ site.title }}</h1>
+                </section>
+
+                <div>
+                    <nav class="nav">
+                        <ul>
+                            <li><a href="{{site.baseurl}}/index.html">Home</a></li>
+                            <li  class="dropdown"><a href="{{site.baseurl}}/blog.html">New drop</a>
+                                <div class="dropdown-content">
+                                    <a href="#">Test</a>
+                                    <a href="#">Test</a>
+                                    <a href="#">Test</a>
+                                </div>
+                            </li>
+                            <!-- <li class="dropdown"><a href="{{site.baseurl}}/blog.html">Dropdown</a>
+                                <span>
+                                    <ul class="dropdown-content">
+                                        <li><a>Lorem ipsum dolor</a></li>
+                                        <li><a>Phasellus consequat</a></li>
+                                        <li><a>Magna phasellus</a></li>
+                                        <li><a>Etiam dolore nisl</a></li>
+                                        <li><a>Veroeros feugiat</a></li>
+                                    </ul>
+                                </span>
+                            </li> -->
+                            <!-- <li><a href="{{site.baseurl}}/index.html">Portfolio</a></li> -->
+                            <li><a href="{{site.baseurl}}/about.html">About</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div id="featured">
+            <div class="container">
+                <header>
+                    <h1> {{page.title}} </h1>
+                </header>
+                <section class="8u -2u">
+
+                    {{ content }}
+
+                </section>
+            </div>
+
+        </div>
+
+        {% include footer.html %}
+    </body>
+</html>
