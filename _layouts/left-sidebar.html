@@ -5,22 +5,32 @@
 <body>
     <div id="banner-common">
         <div id="common">
+
             {% include banner.html %}
         </div>
     </div>
 
     <div id="main">
-        <div class="container">
-            <section class="8u -2u">
+        <div class="sidebar-left">
+            <div class="left-content">
+                <section>
+                    {{ page.sidebar | markdownify }}
+                </section>
+
+            </div>
+
+            <div class="right-content">
+
                 <header>
                     <h1> {{page.title}} </h1>
                 </header>
 
-                {{ content }}
+                <section>
+                    {{ content }}
+                </section>
 
-            </section>
+            </div>
         </div>
-
     </div>
 
     {% include footer.html %}
