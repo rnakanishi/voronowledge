@@ -136,6 +136,7 @@
 #common .navbar {
     width: 50%;
     background-color: #d9e;
+    min-width: 800px;
 }
 
 #common .nav {
@@ -182,13 +183,18 @@
 }
 
 #main {
-    width: 1200px;
+    width: 1000px;
     margin: auto;
     position: relative;
     display: table;
     background: #fff;
     line-height: 1.5em;
     padding-top: 2em;
+}
+
+#main .container {
+    width: 800px;
+    margin: auto;
 }
 
 #main h1 {
@@ -256,7 +262,6 @@
 #main .sidebar-right .left-content {
     display: table-cell;
     text-align: justify;
-    overflow: hidden;
     margin-right: 1em;
     padding-right: 1em;
     /*position: relative;*/
@@ -295,6 +300,22 @@
     /*position: relative;*/
     /*float: left;*/
     width: 75%;
+}
+
+#main .sidebar-right .right-content h1 {
+    font-family: "Raleway";
+}
+
+#main .sidebar-right .right-content h2 {
+    font-family: "Raleway";
+    font-size: 14pt;
+    margin-left: 1em;
+}
+
+#main .sidebar-right .right-content h3 {
+    font-family: "Raleway";
+    font-size: 12pt;
+    margin-left: 2em;
 }
 
 
