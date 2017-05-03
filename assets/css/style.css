@@ -13,6 +13,14 @@ body, input, textarea, select {
     color: #777;
 }
 
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Vidaloka', serif;
 }
@@ -22,9 +30,10 @@ p, ul, ol, dl, table {
     color: #777;
 }
 
-header {
-    margin-bottom: 1em;
+a {
+    text-decoration: underline;
 }
+
 
 hr {
     padding: 0 8em 0 8em;
@@ -216,4 +225,31 @@ header {
 .image.centered img {
     margin: 0 auto;
     width: auto;
+}
+
+.tags-list {
+    display: table-row;
+    font-size: 11pt;
+}
+
+.tags-list > li{
+    display: table-cell;
+    padding: 0 5pt 5pt 0;
+    padding-top: -1em;
+}
+
+.tag-button {
+    border: 2px solid;
+    padding: 5pt;
+    margin: 1pt;
+    color: #57a;
+    border-radius: 4pt;
+}
+
+.author {
+    margin-top: 0 !important;
+    margin-bottom: 0.5em;
+    font-size: 1.2em !important;
+    color: #888 !important;
+    padding-top: -1em;
 }

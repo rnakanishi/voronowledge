@@ -3,4 +3,3 @@ _site
 .gitignore
 .sass-cache
 .jekyll-metadata
-_config.yml

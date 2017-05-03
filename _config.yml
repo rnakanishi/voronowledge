@@ -27,7 +27,7 @@ permalink: /blog/:categories/:year/:month/:day/:title.html
 timezone:      null
 paginate_path: /blog/page:num
 tag_page_dir: /blog/tags
-future: false
+future: true
 
 include: [".nojekyll"]
 # exclude:      ["Gemfile", "Gemfile.lock"]

@@ -199,7 +199,7 @@
 
 #main h1 {
     /*padding-top: 1em;*/
-    padding-bottom: 0.25em;
+    /*padding-bottom: 0.25em;*/
     color: #444;
     font-weight: 300;
     line-height: 1em;
@@ -218,7 +218,8 @@
 #main h2.big {
     font-style: italic;
     line-height: 1.5em;
-    font-size: 200%;>
+    font-size: 200%;
+    >
 }
 
 #main a {
@@ -275,6 +276,8 @@
     padding-left: 1em;
     text-align: justify;
     overflow: hidden;
+    border-left: 1px dashed;
+    color: inherit;
     /*text-align: right;*/
     /*position: relative;*/
     /*width: 27.5%;*/
@@ -304,6 +307,10 @@
 
 #main .sidebar-right .right-content h1 {
     font-family: "Raleway";
+}
+
+#main .sidebar-right .right-content:before {
+    border-left: 1px solid;
 }
 
 #main .sidebar-right .right-content h2 {
