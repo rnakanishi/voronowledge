@@ -89,6 +89,8 @@ GEM
       pathutil (~> 0.9)
       rouge (~> 1.7)
       safe_yaml (~> 1.0)
+    jekyll-archives (2.1.1)
+      jekyll (>= 2.4)
     jekyll-assets (2.2.8)
       extras (~> 0.1)
       fastimage (~> 2.0, >= 1.8)
@@ -157,6 +159,8 @@ GEM
       jekyll (~> 3.3)
     jekyll-titles-from-headings (0.1.5)
       jekyll (~> 3.3)
+    jekyll-toc (0.2.1)
+      nokogiri (~> 1.6)
     jekyll-watch (1.5.0)
       listen (~> 3.0, < 3.1)
     jemoji (0.8.0)
@@ -210,8 +214,11 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jekyll-archives
   jekyll-assets
   jekyll-feed (~> 0.6)
+  jekyll-paginate
+  jekyll-toc
   minima (~> 2.0)
   tzinfo-data
 

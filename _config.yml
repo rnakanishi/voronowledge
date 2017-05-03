@@ -14,40 +14,41 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Voronowledge
-email: your-email@domain.com
-description: > # this means to ignore newlines until "baseurl:"
-  An awesome description :D
 baseurl: "/voronowledge" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_rnaka:  RNakanishi
 github_filipe:  FilipeCN
 
+safe: false
 source:       .
 destination:  ~/git/gh-pages-voro/
-plugins_dir:  _plugins
-layouts_dir:  _layouts
-data_dir:     _data
-includes_dir: _includes
-collections:
-  posts:
-    output:   true
 
-include: ["_pages","_assets",".nojekyll"]
-exclude:      ["Gemfile", "Gemfile.lock"]
+permalink: /blog/:categories/:year/:month/:day/:title.html
+timezone:      null
+paginate_path: /blog/page:num
+tag_page_dir: /blog/tags
+future: false
+
+include: [".nojekyll"]
+# exclude:      ["Gemfile", "Gemfile.lock"]
+
 # Build settings
 markdown: kramdown
-theme: minima
 gems:
+  - jekyll-archives
   - jekyll-assets
+  - jekyll-gist
+  - jekyll-paginate
+  - jekyll-archivesa
+  - jekyll-toc
 
-assets:
-  sources:
-      - "assets/css"
-      - _assets/images
-      - _assets/javascripts
-      - _assets/stylesheets
-      - _assets/fonts
-      - _assets/img
-      - _assets/js
-  compress:
-      css: true
+safe: false
+verbose: true
+
+jekyll-archives:
+    enabled: all
+    layout: 'archive'
+    permalinks:
+        year: '/archives/year/:year.html'
+        month: '/archives/month/:year-:month.html'
+        tag: '/archives/tag/:name.html'
