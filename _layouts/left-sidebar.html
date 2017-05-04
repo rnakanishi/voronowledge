@@ -30,11 +30,27 @@
                         <a class="tag-button" href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | capitalize }}</a> {%endfor%}
                     </ul>
                 </header>
-                
+
                 <section>
                     {{ content }}
                 </section>
 
+                <div id="post-footer">
+                    <div class="post-footer-avatar">
+                        <!-- <a class="icon fa-5x fa-user"> </a> -->
+                        <img src="{{site.data.members[page.author].picture}}" class="post-footer-avatar">
+                    </div>
+                    <div class="post-footer-summary">
+                        <h2>{{site.data.members[page.author].shortname}}</h2>
+                        <p>{{site.data.members[page.author].name}}</p>
+                        <p>{{site.data.members[page.author].position}}</p>
+                    </div>
+                    <div class="post-footer-headline">
+                        <p> {{site.data.members[page.author].description | markdownify }}</p>
+                        <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

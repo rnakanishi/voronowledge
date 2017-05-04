@@ -1,19 +1,16 @@
-
 <div id="footer">
     <div class="container">
 
         <header>
             <h2>Contact info</h2></header>
         <p>Developed by FilipeCN and RNakanishi.</p>
-        <p>PLOasd</p>
 
         <ul class="contact">
-            <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/{{ site.github_filipe }}"><span>Github FilipeCN</span></a>
-                <p>{{site.github_filipe}}</p>
-            </li>
-            <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/{{ site.github_rnaka }}"><span>Github RNakanishi</span></a>
-                <p>{{site.github_rnaka}}</p>
-            </li>
+            {% for member in site.data.members %}
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/{{ member[1].github }}"><span>Github {{member[1].github}}</span></a>
+                    <p>{{member[1].github}}</p>
+                </li>
+            {%endfor%}
             <!-- <li><a class="icon fa-envelope" ><span>Email</span></a></li> -->
         </ul>
     </div>

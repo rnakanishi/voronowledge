@@ -300,6 +300,7 @@
     overflow: hidden;
     margin-left: 1em;
     padding-left: 1em;
+    border-left: 1px dashed;
     /*position: relative;*/
     /*float: left;*/
     width: 75%;
@@ -320,6 +321,26 @@
 }
 
 #main .sidebar-right .right-content h3 {
+    font-family: "Raleway";
+    font-size: 12pt;
+    margin-left: 2em;
+}
+
+#main .sidebar-left .left-content h1 {
+    font-family: "Raleway";
+}
+
+#main .sidebar-left .left-content:before {
+    border-left: 1px solid;
+}
+
+#main .sidebar-left .left-content h2 {
+    font-family: "Raleway";
+    font-size: 14pt;
+    margin-left: 1em;
+}
+
+#main .sidebar-left .left-content h3 {
     font-family: "Raleway";
     font-size: 12pt;
     margin-left: 2em;

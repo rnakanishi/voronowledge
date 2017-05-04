@@ -1,8 +1,8 @@
 hr {
     border: 0;
     border-top: solid 2px #ddd;
-    margin: 6em 0 0 0;
-    padding: 6em 0 0 0;
+    margin: 3em 0 1.5em 0;
+    padding: 3em 0 1.5em 0;
 }
 
 body, input, textarea, select {
@@ -33,7 +33,6 @@ p, ul, ol, dl, table {
 a {
     text-decoration: underline;
 }
-
 
 hr {
     padding: 0 8em 0 8em;
@@ -227,12 +226,25 @@ header {
     width: auto;
 }
 
+.image.caption {
+    padding-top: -2em;
+    margin-top: -2.75em;
+    text-align: center;
+    font-size: .8rem;
+    color: light-grey;
+}
+
+.image.avatar {
+    width: 150px;
+    vertical-align: bottom;
+}
+
 .tags-list {
     display: table-row;
     font-size: 11pt;
 }
 
-.tags-list > li{
+.tags-list>li {
     display: table-cell;
     padding: 0 5pt 5pt 0;
     padding-top: -1em;
@@ -252,4 +264,61 @@ header {
     font-size: 1.2em !important;
     color: #888 !important;
     padding-top: -1em;
+}
+
+#post-footer {
+    width: 100%;
+    display: table-row;
+}
+
+#post-footer>* {
+    display: table-cell;
+}
+
+.post-footer-avatar {
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    vertical-align: middle;
+    text-align: center;
+    min-width: 120px;
+    min-height: 120px;
+    height: 120px;
+    width: 120px;
+    margin: 0 auto 0 auto;
+}
+
+.post-footer-summary {
+    vertical-align: top;
+    width: 30%;
+    min-width: 230px;
+    /*float: left;*/
+    padding: 1.2em 5px 0 5px;
+    margin: 0 auto 0 auto;
+}
+
+#post-footer h2 {
+    margin-top: 0;
+    font-size: 20pt;
+    color: #404040 !important;
+    font-weight: 800 !important;
+    margin-bottom: 0.4em;
+}
+
+#post-footer h3 {
+    font-size: 90%;
+}
+
+#post-footer p {
+    padding: 0;
+    margin: 0;
+    line-height: 1.2em;
+    font-size: 90%;
+}
+
+.post-footer-headline {
+    vertical-align: top;
+    min-width: 380px;
+    width: 60%;
+    margin: 0 auto 0 auto;
+    padding: 1.2em 5px 0 5px;
 }

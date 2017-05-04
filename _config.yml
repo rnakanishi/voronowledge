@@ -16,8 +16,6 @@
 title: Voronowledge
 baseurl: "/voronowledge" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-github_rnaka:  RNakanishi
-github_filipe:  FilipeCN
 
 safe: false
 source:       .
@@ -42,7 +40,6 @@ gems:
   - jekyll-archivesa
   - jekyll-toc
 
-safe: false
 verbose: true
 
 jekyll-archives:
