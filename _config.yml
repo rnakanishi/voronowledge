@@ -40,8 +40,6 @@ gems:
   - jekyll-archivesa
   - jekyll-toc
 
-verbose: true
-
 jekyll-archives:
     enabled: all
     layout: 'archive'
