@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html>
-    {% include head.html %}
+{% include head.html %}
 
-    <body>
-        <div id="banner-header">
-            <div id="homepage-banner">
-                {% include banner.html %}
-            </div>
+<body>
+    <div id="banner-header">
+        <div id="homepage-banner">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/assets/js/voronoi.js"></script>
+            {% include banner.html %}
+        </div>
+    </div>
+
+    <div id="featured">
+        <div class="container">
+            <header>
+                <h1> {{page.title}} </h1>
+            </header>
+            <section class="8u -2u">
+
+                {{ content }}
+
+            </section>
         </div>
 
-        <div id="featured">
-            <div class="container">
-                <header>
-                    <h1> {{page.title}} </h1>
-                </header>
-                <section class="8u -2u">
+    </div>
 
-                    {{ content }}
+    {% include footer.html %}
+</body>
 
-                </section>
-            </div>
-
-        </div>
-
-        {% include footer.html %}
-    </body>
 </html>

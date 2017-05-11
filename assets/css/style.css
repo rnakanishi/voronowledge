@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Vidaloka', serif;
 }
 
-p, ul, ol, dl, table {
+p, ul, ol, dl {
     margin-bottom: 1em;
     color: #777;
 }
@@ -36,6 +36,27 @@ a {
 
 hr {
     padding: 0 8em 0 8em;
+}
+
+blockquote {
+    /*background: #f9f9f9;*/
+    border-left: 5px solid #555;
+    margin: 1.5em 10px 0 1.5em;
+    padding: 0.5em 1.5em;
+    quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+    color: #555;
+    content: open-quote;
+    font-size: 4em;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+}
+
+blockquote p {
+    display: inline;
 }
 
 .icon {
@@ -108,10 +129,6 @@ ul.contact li a:hover:before {
 
 ul.contact li a:active:before {
     background: #444;
-}
-
-p, ul, ol, dl, table {
-    margin-bottom: 1em;
 }
 
 header {
@@ -266,7 +283,14 @@ header {
     padding-top: -1em;
 }
 
+#post-footer::before{
+    display: block;
+    margin-top: 1em;
+    padding: 1em;
+}
 #post-footer {
+    /*padding-top: 1em;*/
+    /*margin-top: 1em;*/
     width: 100%;
     display: table-row;
 }

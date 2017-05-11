@@ -1,6 +1,9 @@
 FilipeCN:
   name: Filipe de Carvalho Nascimento
+  shortname: FilipeCN
+  position: PhD. canditate at ICMC-USP
   github: FilipeCN
+  picture: /assets/images/filipecn-profile.jpg
 
 RNakanishi:
   name: Rafael Umino Nakanishi
@@ -8,5 +11,5 @@ RNakanishi:
   github: RNakanishi
   twitter: RNaka_
   position: PhD. candidate at ICMC-USP
-  description: Love cakes. 
+  description: I love cakes. A lot.
   picture: /assets/images/pic01.jpg

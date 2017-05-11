@@ -5,36 +5,35 @@
 <body>
     <div id="banner-common">
         <div id="common">
-
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/assets/js/voronoi.js"></script>
             {% include banner.html %}
         </div>
     </div>
 
-    <div id="main">
-        <div class="sidebar-right">
-            <div class="left-content">
-                <header>
-                    <h1> {{page.title}} </h1>
-                    {% if page.author %}
-                        <h3>By {{page.author}}</h3>
-                    {%endif%}
-                    <br>
-                    <ul class="tags-list">
-                        {% if page.tags %}
-                        <li class="tag"><strong>Tags: </strong></li>
-                        {% endif %}
-                        {% for tag in page.tags  %}
-                            <a class="tag-button" href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | capitalize }}</a>
-                        {%endfor%}
-                    </ul>
-                </header>
+    <div id="page">
+        <div id="main">
+            <div class="sidebar-right">
+                <div class="left-content">
+                    <header>
+                        <h1> {{page.title}} </h1> {% if page.author %}
+                        <h3>By {{page.author}}</h3> {%endif%}
+                        <br>
+                        <ul class="tags-list">
+                            {% if page.tags %}
+                            <li class="tag"><strong>Tags: </strong></li>
+                            {% endif %} {% for tag in page.tags %}
+                            <a class="tag-button" href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | capitalize }}</a> {%endfor%}
+                        </ul>
+                    </header>
 
-                <section>
-                    {{ content }}
-                </section>
+                    <section>
+                        {{ content }}
+                    </section>
 
-                <!-- <hr style="border: 1px dashed #aaa;"> -->
-                {%if page.author%}
+                    <!-- <hr style="border: 1px dashed #aaa;"> -->
+                    {%if page.author%}
                     <div id="post-footer">
                         <div class="post-footer-avatar">
                             <!-- <a class="icon fa-5x fa-user"> </a> -->
@@ -51,16 +50,18 @@
                         </div>
 
                     </div>
-                {%endif%}
+                    {%endif%}
 
-            </div>
+                </div>
 
-            <div class="right-content">
-                <section>
-                    {{ page.sidebar | markdownify }}
-                </section>
+                <div class="right-content">
+                    <section>
+                        {{ page.sidebar | markdownify }}
+                    </section>
+                </div>
             </div>
         </div>
+
     </div>
 
     {% include footer.html %}

@@ -4,6 +4,7 @@ title:  "RBF Interpolation"
 tags: [interpolation, rbf]
 summary: About Radial Basis interpolation.
 author: RNakanishi
+published: false
 sidebar: |
   # Content
   ## [What is RBF](#what-is-rbf)
