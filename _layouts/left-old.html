@@ -17,7 +17,9 @@
                                 etiam.
                             </p><a class="button" style="cursor: pointer;">Find out more</a></section>
                         <section>
-                            {{ page.leftbar }}
+														{% for tag in page.tags %}
+			 												<span class="label label-success">{{ tag }}</span>
+														{% endfor %}
                             <header>
                                 <h2>Integer gravida</h2></header>
                             <ul class="style1">
