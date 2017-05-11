@@ -3,7 +3,11 @@ layout: left
 title: About
 inline: Talking about us
 permalink: /about
-leftbar: LEFT BAR
+tags:
+- News
+- Tags
+- Blog
+- Post
 ---
 
 This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
