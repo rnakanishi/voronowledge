@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+{% include head.html %}
+
+<body>
+    <div id="banner-common">
+        <div id="common">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/assets/js/voronoi.js"></script>
+            {% include banner.html %}
+        </div>
+    </div>
+
+    <div id="main">
+        <div class="sidebar-left">
+            <div class="left-content">
+                <section>
+                    {{ page.sidebar | markdownify }}
+                </section>
+
+            </div>
+
+            <div class="right-content">
+                <header>
+                    <h1> {{page.title}} </h1>
+                    <h2 class="author">Post author: {{page.author}}</h2>
+                    <ul class="tags-list">
+                        {% if page.tags %}
+                        <li class="tag"><strong>Tags: </strong></li>
+                        {% endif %} {% for tag in page.tags %}
+                        <a class="tag-button" href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | capitalize }}</a> {%endfor%}
+                    </ul>
+                </header>
+
+                <section>
+                    {{ content }}
+                </section>
+
+                <div id="post-footer">
+                    <div class="post-footer-avatar">
+                        <!-- <a class="icon fa-5x fa-user"> </a> -->
+                        <img src="{{site.data.members[page.author].picture}}" class="post-footer-avatar">
+                    </div>
+                    <div class="post-footer-summary">
+                        <h2>{{site.data.members[page.author].shortname}}</h2>
+                        <p>{{site.data.members[page.author].name}}</p>
+                        <p>{{site.data.members[page.author].position}}</p>
+                    </div>
+                    <div class="post-footer-headline">
+                        <p> {{site.data.members[page.author].description | markdownify }}</p>
+                        <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include footer.html %}
+</body>
+
+</html>

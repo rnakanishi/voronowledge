@@ -1,0 +1,23 @@
+path {
+    stroke: black;
+    stroke-width: 1;
+    fill: none;
+}
+
+.polygons :first-child {
+  fill: #dee;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+#graph {
+    width: 400px;
+    height: 300px;
+    text-align: center;
+    margin: auto;
+}

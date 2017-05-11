@@ -1,0 +1,41 @@
+<div class="row">
+
+    <span class="pennant">
+        <a href="{{site.baseurl}}/index.html">
+        <img src="{{site.baseurl}}/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
+        <h1>{{ site.title }}</h1>
+        </a>
+    </span>
+</div>
+
+<div class="navbar">
+    <nav class="nav">
+        <ul>
+            <li><a href="{{site.baseurl}}/index.html">Home</a></li>
+            <li  class="dropdown"><a href="{{site.baseurl}}/blog/">Posts</a>
+                <div class="dropdown-content">
+                    {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+                    {% assign alltags = site_tags | split:',' | sort %}
+                    {% for tag in alltags %}
+                        <a href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{ tag | capitalize }}</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    {% endfor %}
+                </div>
+            </li>
+            <!-- <li class="dropdown"><a href="{{site.baseurl}}/blog.html">Dropdown</a>
+                <span>
+                    <ul class="dropdown-content">
+                        <li><a>Lorem ipsum dolor</a></li>
+                        <li><a>Phasellus consequat</a></li>
+                        <li><a>Magna phasellus</a></li>
+                        <li><a>Etiam dolore nisl</a></li>
+                        <li><a>Veroeros feugiat</a></li>
+                    </ul>
+                </span>
+            </li> -->
+            <!-- <li><a href="{{site.baseurl}}/index.html">Portfolio</a></li> -->
+            <li><a href="{{site.baseurl}}/about.html">About</a></li>
+        </ul>
+    </nav>
+</div>

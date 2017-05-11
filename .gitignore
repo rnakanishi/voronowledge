@@ -1,5 +1,5 @@
 _sites
+_site
 .gitignore
 .sass-cache
 .jekyll-metadata
-_config.yml
