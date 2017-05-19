@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="/voronowledge/feed.xml" rel="self" type="application/atom+xml" /><link href="/voronowledge/" rel="alternate" type="text/html" /><updated>2017-05-19T16:05:50-03:00</updated><id>/voronowledge/</id><title type="html">Voronowledge</title><entry><title type="html">A Sparse Paged Grid structure</title><link href="/voronowledge/blog/2017/05/18/spgrid.html" rel="alternate" type="text/html" title="A Sparse Paged Grid structure" /><published>2017-05-18T00:00:00-03:00</published><updated>2017-05-18T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/18/spgrid</id><content type="html" xml:base="/voronowledge/blog/2017/05/18/spgrid.html">&lt;p&gt;&lt;strong&gt;Disclaimer: This paper was originally written by &lt;em&gt;&lt;a href=&quot;http://stanford.edu/~setaluri/&quot; target=&quot;_blank&quot;&gt;Rajsekhar Setaluri&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~aanjneya/&quot; target=&quot;_blank&quot;&gt;Mridul Aanjaneya&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;Sean Bauer&lt;/em&gt; and &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~sifakis/&quot; target=&quot;_blank&quot;&gt;Eftychios Sifakis&lt;/a&gt;&lt;/em&gt;. Originally published on &lt;em&gt;ACM Transactions on Graphics&lt;/em&gt;, 2014.&lt;/strong&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="/voronowledge/feed.xml" rel="self" type="application/atom+xml" /><link href="/voronowledge/" rel="alternate" type="text/html" /><updated>2017-05-19T16:15:12-03:00</updated><id>/voronowledge/</id><title type="html">Voronowledge</title><entry><title type="html">A Sparse Paged Grid structure</title><link href="/voronowledge/blog/2017/05/18/spgrid.html" rel="alternate" type="text/html" title="A Sparse Paged Grid structure" /><published>2017-05-18T00:00:00-03:00</published><updated>2017-05-18T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/18/spgrid</id><content type="html" xml:base="/voronowledge/blog/2017/05/18/spgrid.html">&lt;p&gt;&lt;strong&gt;Disclaimer: This paper was originally written by &lt;em&gt;&lt;a href=&quot;http://stanford.edu/~setaluri/&quot; target=&quot;_blank&quot;&gt;Rajsekhar Setaluri&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~aanjneya/&quot; target=&quot;_blank&quot;&gt;Mridul Aanjaneya&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;Sean Bauer&lt;/em&gt; and &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~sifakis/&quot; target=&quot;_blank&quot;&gt;Eftychios Sifakis&lt;/a&gt;&lt;/em&gt;. Originally published on &lt;em&gt;ACM Transactions on Graphics&lt;/em&gt;, 2014.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/quadtree-as-sp.png&quot; alt=&quot;Quadtree as pyramid sparse grid&quot; class=&quot;image right&quot; /&gt;&lt;/p&gt;
 
@@ -31,7 +31,7 @@ This structure ia able to construct an adaptive discretization for the simulatio
 
 &lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/active-cells.png&quot; alt=&quot;Active cells and faces&quot; class=&quot;image left&quot; /&gt;&lt;/p&gt;
 
-&lt;p class=&quot;image left caption&quot;&gt;Active cells and active faces in the pyramid structure. Adapted from the original paper.&lt;/p&gt;
+&lt;p class=&quot;image left caption&quot;&gt;&lt;strong&gt;Figure 3:&lt;/strong&gt; Active cells and active faces in the pyramid structure. Adapted from the original paper.&lt;/p&gt;
 
 &lt;p&gt;To build the pyramid structure, it’s necessary to identify cells and faces that can carry degrees of freedom. These cells are defined as &lt;em&gt;active cells&lt;/em&gt; and &lt;em&gt;active faces&lt;/em&gt;:&lt;/p&gt;
 
@@ -43,9 +43,9 @@ This structure ia able to construct an adaptive discretization for the simulatio
 &lt;p&gt;Now that the pyramid structure for the simulations is well declared, it is necessary to perform discrete operations for the simulation: stencil operations within single levels; and operations through different levels of the pyramid.&lt;/p&gt;
 
 &lt;h3 id=&quot;discrete-operators&quot;&gt;Discrete operators&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/ghost.png&quot; alt=&quot;Active cells and faces&quot; class=&quot;image left&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/ghost.png&quot; alt=&quot;Ghost points&quot; class=&quot;image left&quot; /&gt;&lt;/p&gt;
 
-&lt;p class=&quot;image left caption&quot;&gt;Ghost cells are introduced per level of the pyramid structure. Adapted from the original paper.&lt;/p&gt;
+&lt;p class=&quot;image left caption&quot;&gt;&lt;strong&gt;Figure 4:&lt;/strong&gt; Ghost cells are introduced per level of the pyramid structure. Adapted from the original paper.&lt;/p&gt;
 
 &lt;p&gt;Let’s denote with &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; the level of the pyramid. A cell that lives natively at level &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;  and has multidimensional index &lt;script type=&quot;math/tex&quot;&gt;I&lt;/script&gt; is denoted as &lt;script type=&quot;math/tex&quot;&gt;C_I^l&lt;/script&gt;.
 Also let’s introduce a &lt;em&gt;ghost cell&lt;/em&gt;. &lt;script type=&quot;math/tex&quot;&gt;C_I^l&lt;/script&gt; is a ghost if:&lt;/p&gt;
@@ -63,13 +63,15 @@ Also let’s introduce a &lt;em&gt;ghost cell&lt;/em&gt;. &lt;script type=&quot;
   &lt;li&gt;&lt;em&gt;Ghost value accumulate&lt;/em&gt;: downsampling routine. Each data of level &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; accumulates contributions from any ghost children at level &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/accumulate.png&quot; alt=&quot;Active cells and faces&quot; class=&quot;image medium&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/accumulate.png&quot; alt=&quot;Accumulation and propagation operations&quot; class=&quot;image medium&quot; /&gt;&lt;/p&gt;
 
-&lt;p class=&quot;image caption medium&quot;&gt;Accumulate routine on the left. Propagate routine on the left. Adapted from the original paper.&lt;/p&gt;
+&lt;p class=&quot;image caption medium&quot;&gt;&lt;strong&gt;Figure 5:&lt;/strong&gt; Accumulate routine on the left. Propagate routine on the left. Adapted from the original paper.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Discrete gradient&lt;/strong&gt; The pressure gradient values are defined in every face that borders an active cell as &lt;script type=&quot;math/tex&quot;&gt;g = \frac{p_i-p_k}{\Delta}&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;i\neq k&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;i,k&lt;/script&gt; cells with a shared face. The case where gradient lives between two cells of the same size is straight forward: &lt;script type=&quot;math/tex&quot;&gt;\Delta = h&lt;/script&gt; is the distance between cells center. In the case where we have neighbors of different sizes, the &lt;em&gt;propagate&lt;/em&gt; routine computed earlier guarantee that there will have a ghost point to compute the gradient. The issue here is which &lt;script type=&quot;math/tex&quot;&gt;\Delta&lt;/script&gt; to use: in this case, &lt;script type=&quot;math/tex&quot;&gt;\Delta = (h+\frac{h}{2})2 = 3/4 h&lt;/script&gt; for a single level transition. As a general rule, &lt;script type=&quot;math/tex&quot;&gt;\Delta = 3h_{min}/2&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;h_{min}&lt;/script&gt; is the size of smallest cell.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/delta-cells.png&quot; alt=&quot;Active cells and faces&quot; class=&quot;image medium&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/delta-cells.png&quot; alt=&quot;Delta values&quot; class=&quot;image medium&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;image medium caption&quot;&gt;&lt;strong&gt;Figure 6:&lt;/strong&gt; Computation of the &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; value is different for each case.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Divergence&lt;/strong&gt;
 The volume-weighted velocity divergence on cell centers is computed as follows:&lt;/p&gt;
@@ -84,10 +86,10 @@ Since propagate routine is performed at the beginning of the sequence, and the a
 &lt;h2 id=&quot;adaptive-multigrid-preconditioner&quot;&gt;Adaptive multigrid preconditioner&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/multigrid.png&quot; alt=&quot;multigrid&quot; class=&quot;image right&quot; /&gt;&lt;/p&gt;
 
+&lt;p class=&quot;image right caption&quot;&gt;&lt;strong&gt;Figure 7:&lt;/strong&gt; The pyramid used in the SPGrid is on the right. Yellow cells are introduced for the multigrid scheme. Source: original paper.&lt;/p&gt;
+
 &lt;p&gt;To preconditionate the laplacian matrix and avoid instabilities in the simulation, a multigrid-based preconditioner  for adaptive grids is used.
 For each level of the hierarchy, all cells are guaranteed to exist at the immediately coarser level. Such cells are created by copying the values of their counterparts on the next level of the octree (coarser level).&lt;/p&gt;
-
-&lt;p class=&quot;image right caption&quot;&gt;The pyramid used in the SPGrid is on the right. Yellow cells are introduced for the multigrid scheme.&lt;/p&gt;
 
 &lt;p&gt;At the bottom of the multigrid V-cycle, a non multigrid is used to solve the coarse level problem. The upstroke of the V-cycle is the adjoint of the downstroke: ghost values of $$\mathbf{u}$ are propagated such that finer cells receive information from coarse neighbors.&lt;/p&gt;
 
@@ -96,7 +98,7 @@ For each level of the hierarchy, all cells are guaranteed to exist at the immedi
 
 &lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/interpolation.png&quot; alt=&quot;multigrid&quot; class=&quot;image left&quot; /&gt;&lt;/p&gt;
 
-&lt;p class=&quot;image left caption&quot;&gt;Interpolation from cell centered values and from face centered values.&lt;/p&gt;
+&lt;p class=&quot;image left caption&quot;&gt;&lt;strong&gt;Figure 8:&lt;/strong&gt; Interpolation from cell centered values and from face centered values. Source: original paper.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;return the exact value if the target point coincides with a location where physical quantity is stored;&lt;/li&gt;

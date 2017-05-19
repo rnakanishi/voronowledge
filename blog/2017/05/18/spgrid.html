@@ -131,7 +131,7 @@ This structure ia able to construct an adaptive discretization for the simulatio
 
 <p><img src="/voronowledge/assets/blog-images/spgrid/active-cells.png" alt="Active cells and faces" class="image left" /></p>
 
-<p class="image left caption">Active cells and active faces in the pyramid structure. Adapted from the original paper.</p>
+<p class="image left caption"><strong>Figure 3:</strong> Active cells and active faces in the pyramid structure. Adapted from the original paper.</p>
 
 <p>To build the pyramid structure, it’s necessary to identify cells and faces that can carry degrees of freedom. These cells are defined as <em>active cells</em> and <em>active faces</em>:</p>
 
@@ -143,9 +143,9 @@ This structure ia able to construct an adaptive discretization for the simulatio
 <p>Now that the pyramid structure for the simulations is well declared, it is necessary to perform discrete operations for the simulation: stencil operations within single levels; and operations through different levels of the pyramid.</p>
 
 <h3 id="discrete-operators">Discrete operators</h3>
-<p><img src="/voronowledge/assets/blog-images/spgrid/ghost.png" alt="Active cells and faces" class="image left" /></p>
+<p><img src="/voronowledge/assets/blog-images/spgrid/ghost.png" alt="Ghost points" class="image left" /></p>
 
-<p class="image left caption">Ghost cells are introduced per level of the pyramid structure. Adapted from the original paper.</p>
+<p class="image left caption"><strong>Figure 4:</strong> Ghost cells are introduced per level of the pyramid structure. Adapted from the original paper.</p>
 
 <p>Let’s denote with <script type="math/tex">l</script> the level of the pyramid. A cell that lives natively at level <script type="math/tex">l</script>  and has multidimensional index <script type="math/tex">I</script> is denoted as <script type="math/tex">C_I^l</script>.
 Also let’s introduce a <em>ghost cell</em>. <script type="math/tex">C_I^l</script> is a ghost if:</p>
@@ -163,13 +163,15 @@ Also let’s introduce a <em>ghost cell</em>. <script type="math/tex">C_I^l</scr
   <li><em>Ghost value accumulate</em>: downsampling routine. Each data of level <script type="math/tex">l</script> accumulates contributions from any ghost children at level <script type="math/tex">l-1</script>.</li>
 </ul>
 
-<p><img src="/voronowledge/assets/blog-images/spgrid/accumulate.png" alt="Active cells and faces" class="image medium" /></p>
+<p><img src="/voronowledge/assets/blog-images/spgrid/accumulate.png" alt="Accumulation and propagation operations" class="image medium" /></p>
 
-<p class="image caption medium">Accumulate routine on the left. Propagate routine on the left. Adapted from the original paper.</p>
+<p class="image caption medium"><strong>Figure 5:</strong> Accumulate routine on the left. Propagate routine on the left. Adapted from the original paper.</p>
 
 <p><strong>Discrete gradient</strong> The pressure gradient values are defined in every face that borders an active cell as <script type="math/tex">g = \frac{p_i-p_k}{\Delta}</script>, for <script type="math/tex">i\neq k</script> and <script type="math/tex">i,k</script> cells with a shared face. The case where gradient lives between two cells of the same size is straight forward: <script type="math/tex">\Delta = h</script> is the distance between cells center. In the case where we have neighbors of different sizes, the <em>propagate</em> routine computed earlier guarantee that there will have a ghost point to compute the gradient. The issue here is which <script type="math/tex">\Delta</script> to use: in this case, <script type="math/tex">\Delta = (h+\frac{h}{2})2 = 3/4 h</script> for a single level transition. As a general rule, <script type="math/tex">\Delta = 3h_{min}/2</script>, where <script type="math/tex">h_{min}</script> is the size of smallest cell.</p>
 
-<p><img src="/voronowledge/assets/blog-images/spgrid/delta-cells.png" alt="Active cells and faces" class="image medium" /></p>
+<p><img src="/voronowledge/assets/blog-images/spgrid/delta-cells.png" alt="Delta values" class="image medium" /></p>
+
+<p class="image medium caption"><strong>Figure 6:</strong> Computation of the <script type="math/tex">h</script> value is different for each case.</p>
 
 <p><strong>Divergence</strong>
 The volume-weighted velocity divergence on cell centers is computed as follows:</p>
@@ -184,10 +186,10 @@ Since propagate routine is performed at the beginning of the sequence, and the a
 <h2 id="adaptive-multigrid-preconditioner">Adaptive multigrid preconditioner</h2>
 <p><img src="/voronowledge/assets/blog-images/spgrid/multigrid.png" alt="multigrid" class="image right" /></p>
 
+<p class="image right caption"><strong>Figure 7:</strong> The pyramid used in the SPGrid is on the right. Yellow cells are introduced for the multigrid scheme. Source: original paper.</p>
+
 <p>To preconditionate the laplacian matrix and avoid instabilities in the simulation, a multigrid-based preconditioner  for adaptive grids is used.
 For each level of the hierarchy, all cells are guaranteed to exist at the immediately coarser level. Such cells are created by copying the values of their counterparts on the next level of the octree (coarser level).</p>
-
-<p class="image right caption">The pyramid used in the SPGrid is on the right. Yellow cells are introduced for the multigrid scheme.</p>
 
 <p>At the bottom of the multigrid V-cycle, a non multigrid is used to solve the coarse level problem. The upstroke of the V-cycle is the adjoint of the downstroke: ghost values of $$\mathbf{u}$ are propagated such that finer cells receive information from coarse neighbors.</p>
 
@@ -196,7 +198,7 @@ For each level of the hierarchy, all cells are guaranteed to exist at the immedi
 
 <p><img src="/voronowledge/assets/blog-images/spgrid/interpolation.png" alt="multigrid" class="image left" /></p>
 
-<p class="image left caption">Interpolation from cell centered values and from face centered values.</p>
+<p class="image left caption"><strong>Figure 8:</strong> Interpolation from cell centered values and from face centered values. Source: original paper.</p>
 
 <ul>
   <li>return the exact value if the target point coincides with a location where physical quantity is stored;</li>
