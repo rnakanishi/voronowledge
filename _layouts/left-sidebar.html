@@ -15,7 +15,7 @@
     <div id="main">
         <div class="sidebar-left">
             <div class="left-content">
-                <section>
+                <section id="sidebar">
                     {{ page.sidebar | markdownify }}
                 </section>
 
@@ -33,14 +33,14 @@
                     </ul>
                 </header>
 
-                <section>
+                <section class="blog">
                     {{ content }}
                 </section>
-
+                <br /><br />
                 <div id="post-footer">
                     <div class="post-footer-avatar">
                         <!-- <a class="icon fa-5x fa-user"> </a> -->
-                        <img src="{{site.data.members[page.author].picture}}" class="post-footer-avatar">
+                        <img src="{{site.baseurl}}{{site.data.members[page.author].picture}}" class="post-footer-avatar">
                     </div>
                     <div class="post-footer-summary">
                         <h2>{{site.data.members[page.author].shortname}}</h2>

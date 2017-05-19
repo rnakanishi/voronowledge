@@ -7,7 +7,7 @@
         <div id="common">
             <div id="voronoi-graph"></div>
             <script src="https://d3js.org/d3.v4.min.js"></script>
-						<script src="{{site.baseurl}}/assets/js/voronoi.js"></script>
+            <script src="{{site.baseurl}}/assets/js/voronoi.js"></script>
             {% include banner.html %}
         </div>
     </div>
@@ -16,7 +16,7 @@
         <div id="main">
             <div class="sidebar-right">
                 <div class="left-content">
-                    <header>
+                    <header class="main">
                         <h1> {{page.title}} </h1> {% if page.author %}
                         <h3>By {{page.author}}</h3> {%endif%}
                         <br>
@@ -28,16 +28,16 @@
                         </ul>
                     </header>
 
-                    <section>
+                    <section class="blog">
                         {{ content }}
                     </section>
-
+                    <br /><br />
                     <!-- <hr style="border: 1px dashed #aaa;"> -->
                     {%if page.author%}
                     <div id="post-footer">
                         <div class="post-footer-avatar">
                             <!-- <a class="icon fa-5x fa-user"> </a> -->
-                            <img src="{{site.data.members[page.author].picture}}" class="post-footer-avatar">
+                            <img src="{{site.baseurl}}{{site.data.members[page.author].picture}}" class="post-footer-avatar">
                         </div>
                         <div class="post-footer-summary">
                             <h2>{{site.data.members[page.author].shortname}}</h2>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="right-content">
-                    <section>
+                    <section id="sidebar">
                         {{ page.sidebar | markdownify }}
                     </section>
                 </div>

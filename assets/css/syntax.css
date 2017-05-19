@@ -33,6 +33,7 @@ pre>code {
     font-size: 95%;
     line-height: 120%;
     width: auto;
+    max-width: 600px;
     white-space: pre;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;

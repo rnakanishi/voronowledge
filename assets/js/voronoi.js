@@ -32,6 +32,8 @@ function windowResize() {
     var height = d3.select("#voronoi-graph").node().getBoundingClientRect().height;
 
     console.log("Redrawn: " + width + " " + height);
+    svg = d3.select("#voronoi-graph").select("svg");
+
     svg.attr("width", width);
     // .attr("height", height);
     voronoi.extent([

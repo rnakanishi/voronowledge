@@ -4,20 +4,57 @@ path {
     fill: none;
 }
 
+.curve {
+    stroke: #86f;
+    stroke-width: 1.5;
+}
+
+.dashed {
+    stroke-dasharray: 1.5%;
+    stroke-width: 1;
+}
+
 .polygons :first-child {
-  fill: #dee;
+    fill: #dee;
+}
+
+.axis{
+    stroke: #777;
+    stroke-width: 0.4;
 }
 
 .axis path, .axis line {
     fill: none;
-    stroke: grey;
+    stroke: #777;
     stroke-width: 1;
     shape-rendering: crispEdges;
 }
 
 #graph {
-    width: 400px;
     height: 300px;
+}
+
+#graph, .graph-js {
+    width: 300px;
     text-align: center;
     margin: auto;
+}
+
+.graph-full {
+    display: block;
+    margin: auto;
+    text-align: center;
+    color: blue;
+    width: 100%;
+    max-height: 400px;
+}
+
+.graph.caption {
+    width: 500px;
+    margin:auto;
+    margin-top: -1em;
+    margin-bottom: 2em;
+    font-size: .8em;
+    font-style: italic;
+    line-height: 1.1em;
 }

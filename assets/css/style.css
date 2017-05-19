@@ -39,11 +39,18 @@ hr {
 }
 
 blockquote {
-    /*background: #f9f9f9;*/
+    display: grid;
+    background: #f9f9f9;
     border-left: 5px solid #555;
-    margin: 1.5em 10px 0 1.5em;
+    margin: 1.5em 10px 0.5em 1.5em;
     padding: 0.5em 1.5em;
     quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote.theorem {
+    display: block;
+    background: #fff;
+    quotes: none;
 }
 
 blockquote:before {
@@ -53,6 +60,17 @@ blockquote:before {
     line-height: 0.1em;
     margin-right: 0.25em;
     vertical-align: -0.4em;
+}
+
+blockquote.theorem:before {
+    display: block;
+    content: "Theorem";
+    text-decoration: underline;
+    font-size: 1.5em;
+    line-height: 1.1em;
+}
+blockquote.theorem.pt-br:before {
+    content: "Teorema";
 }
 
 blockquote p {
@@ -141,7 +159,10 @@ header {
 }
 
 .dropdown-content {
-    display: none;
+    transition: visibility 0.3s linear, opacity 0.25s linear;
+    opacity: 0;
+    /*display: block;*/
+    visibility: hidden;
     position: absolute;
     z-index: 1;
     background: #555;
@@ -174,7 +195,10 @@ header {
 }
 
 .dropdown:hover .dropdown-content {
-    display: block;
+    transition: visibility 0.3s linear, opacity 0.25s linear;
+    opacity: 1;
+    visibility: visible;
+    /*display: block;*/
 }
 
 .dropdown-content a:hover {
@@ -183,6 +207,7 @@ header {
 
 .image {
     display: block;
+    margin: 1em auto 1em auto;
 }
 
 .image img {
@@ -193,24 +218,22 @@ header {
 .image.featured {
     display: block;
     width: 100%;
-    margin: 0 0 2em 0;
 }
 
 .image.full {
     display: block;
     width: 100%;
-    margin-bottom: 2em;
 }
 
 .image.square {
     display: block;
     width: 100%;
-    margin-bottom: 2em;
 }
 
 .image.medium {
     margin: auto;
     width: 75%;
+    height: 100%;
     text-align: center;
 }
 
@@ -225,29 +248,29 @@ header {
     width: 100%;
     display: block;
     border-radius: 50%;
-    margin-bottom: 2em;
 }
 
 .image.left {
     float: left;
-    margin: 0 2em 2em 0;
+    width: 50%;
+    margin-right: 2em;
+}
+
+.image.right {
+    float: right;
+    width: 50%;
+    margin-left: 2em;
 }
 
 .image.centered {
     display: block;
-    margin: 0 0 2em 0;
-}
-
-.image.centered img {
-    margin: 0 auto;
-    width: auto;
 }
 
 .image.caption {
-    padding-top: -2em;
-    margin-top: -2.75em;
-    text-align: center;
-    font-size: .8rem;
+    margin-top: -1em;
+    margin-bottom: 1em;
+    font-size: .8em;
+    line-height: 1.2em;
     color: light-grey;
 }
 
@@ -340,9 +363,23 @@ header {
 }
 
 .post-footer-headline {
-    vertical-align: top;
+    vertical-align: middle;
     min-width: 380px;
     width: 60%;
     margin: 0 auto 0 auto;
-    padding: 1.2em 5px 0 5px;
+    padding: auto 5px auto 5px;
+}
+
+li {
+    margin: auto;
+}
+
+ul {
+    list-style-position: inside;
+    list-style-type: circle;
+}
+
+ol {
+    list-style-position: inside;
+    list-style-type: decimal;
 }
