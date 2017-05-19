@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1">
+        <meta name="viewport" content="user-scalable=yes,width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <script src="assets/js/util.js"></script> -->
+
+        <title> Voronowledge </title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
+        <!-- <link rel="stylesheet" href="/voronowledge/assets/css/voro.css" /> -->
+        <link rel="stylesheet" href="/voronowledge/assets/css/media.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/homepage.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/style.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/icons.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/syntax.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/graph.css" />
+    </head>
+
+
+<body>
+    <div id="banner-common">
+        <div id="common">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/voronowledge/assets/js/voronoi.js"></script>
+            <div class="row">
+
+    <span class="pennant">
+        <a href="/voronowledge/index.html">
+        <img src="/voronowledge/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
+        <h1>Voronowledge</h1>
+        </a>
+    </span>
+</div>
+
+<div class="navbar">
+    <nav class="nav">
+        <ul>
+            <li><a href="/voronowledge/index.html">Home</a></li>
+            <li  class="dropdown"><a href="/voronowledge/blog/">Posts</a>
+                <div class="dropdown-content">
+                    
+                    
+                    
+                        <a href="/voronowledge/archives/tag/interpolation.html">Interpolation</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/paper.html">Paper</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/pt-br.html">Pt-br</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                </div>
+            </li>
+            <!-- <li class="dropdown"><a href="/voronowledge/blog.html">Dropdown</a>
+                <span>
+                    <ul class="dropdown-content">
+                        <li><a>Lorem ipsum dolor</a></li>
+                        <li><a>Phasellus consequat</a></li>
+                        <li><a>Magna phasellus</a></li>
+                        <li><a>Etiam dolore nisl</a></li>
+                        <li><a>Veroeros feugiat</a></li>
+                    </ul>
+                </span>
+            </li> -->
+            <!-- <li><a href="/voronowledge/index.html">Portfolio</a></li> -->
+            <li><a href="/voronowledge/about.html">About</a></li>
+        </ul>
+    </nav>
+</div>
+
+        </div>
+    </div>
+
+    <div id="page">
+        <div id="main">
+            <div class="sidebar-right">
+                <div class="left-content">
+                    <header class="main">
+                        <h1> A Sparse Paged Grid structure </h1> 
+                        <h3>By RNakanishi</h3> 
+                        <br>
+                        <ul class="tags-list">
+                            
+                            <li class="tag"><strong>Tags: </strong></li>
+                             
+                            <a class="tag-button" href="/voronowledge/archives/tag/paper.html">Paper</a> 
+                        </ul>
+                    </header>
+
+                    <section class="blog">
+                        <p><strong>Disclaimer: This paper was originally written by <em><a href="http://stanford.edu/~setaluri/" target="_blank">Rajsekhar Setaluri</a></em>, <em><a href="http://pages.cs.wisc.edu/~aanjneya/" target="_blank">Mridul Aanjaneya</a></em>, <em>Sean Bauer</em> and <em><a href="http://pages.cs.wisc.edu/~sifakis/" target="_blank">Eftychios Sifakis</a></em>. Originally published on <em>ACM Transactions on Graphics</em>, 2014.</strong></p>
+
+<p><img src="/voronowledge/assets/blog-images/spgrid/quadtree-as-sp.png" alt="Quadtree as pyramid sparse grid" class="image right" /></p>
+
+<p class="image right caption"><strong>Figure 1:</strong> Quadtree grid converted to a pyramid sparse grid. Source: original paper.</p>
+
+<p>A new data structure for storing and processing fluids simulations on sparse populated high-resolution uniform grids is presented: <em>SPGrid</em> (Sparse Paged Grid).
+This structure ia able to construct an adaptive discretization for the simulation based on a tree-based representation has been placed (See figure on the right).</p>
+
+<h2 id="adaptive-discretization">Adaptive discretization</h2>
+
+<p>Adaptive structures are good for simulations because you don’t want to have a fine resolution over all your domain. Instead, you usually want to refine in some regions where more detail is required. However, applying stencils is not an easy thing: accessing neighbors require go through different levels and different nodes of your tree structure.</p>
+
+<p><img src="/voronowledge/assets/blog-images/spgrid/image4146.png" alt="Quadtree" class="image medium" /></p>
+
+<p class="image medium caption"><strong>Figure 2:</strong> Accessing neighbors in a quadtree structure requires to go through different levels of the tree. The targeted cell in blue has to travel through all levels to find its neighbors in red.</p>
+
+<p>The idea behind SPGrid is to substitute the tree-based structure with a pyramid of sparsely populated uniform grids, as shown in the <em>Figure 2</em>.</p>
+
+<h3 id="pyramid-of-sparsely-populated-uniform-grids">Pyramid of sparsely populated uniform grids</h3>
+<p>The equation to be solved here is the incompressible inviscid Navier-Stokes equations:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+    \mathbf{u}_t + (\mathbf{u}\cdot\nabla)\mathbf{u} + \frac{\nabla p}{\rho} &=& \mathbf{f} \\
+    \nabla\cdot\mathbf{u} &=& 0
+
+\end{eqnarray} %]]></script>
+
+<p>with a splitting scheme. In the equation, <script type="math/tex">\mathbf{u} = (u,v,w)</script> is vector velocity field; <script type="math/tex">\mathbf{f}</script> is the external forces component; <script type="math/tex">p</script> is the scalar pressure field; and <script type="math/tex">\rho</script> is the fluid density.</p>
+
+<p><img src="/voronowledge/assets/blog-images/spgrid/active-cells.png" alt="Active cells and faces" class="image left" /></p>
+
+<p class="image left caption">Active cells and active faces in the pyramid structure. Adapted from the original paper.</p>
+
+<p>To build the pyramid structure, it’s necessary to identify cells and faces that can carry degrees of freedom. These cells are defined as <em>active cells</em> and <em>active faces</em>:</p>
+
+<ul>
+  <li>A cell is <em>active</em> if it is present in the geometry and is undivided in the octree;</li>
+  <li>A face is <em>active</em> if the face is present in the geometry and undivided in the octree;</li>
+</ul>
+
+<p>Now that the pyramid structure for the simulations is well declared, it is necessary to perform discrete operations for the simulation: stencil operations within single levels; and operations through different levels of the pyramid.</p>
+
+<h3 id="discrete-operators">Discrete operators</h3>
+<p><img src="/voronowledge/assets/blog-images/spgrid/ghost.png" alt="Active cells and faces" class="image left" /></p>
+
+<p class="image left caption">Ghost cells are introduced per level of the pyramid structure. Adapted from the original paper.</p>
+
+<p>Let’s denote with <script type="math/tex">l</script> the level of the pyramid. A cell that lives natively at level <script type="math/tex">l</script>  and has multidimensional index <script type="math/tex">I</script> is denoted as <script type="math/tex">C_I^l</script>.
+Also let’s introduce a <em>ghost cell</em>. <script type="math/tex">C_I^l</script> is a ghost if:</p>
+
+<ol>
+  <li><script type="math/tex">C_I^l</script> is not active at level <script type="math/tex">l</script>;</li>
+  <li><script type="math/tex">C_I^l</script> is neighbor of an active cell at level <script type="math/tex">l_{lower} \leq l</script>,</li>
+  <li>There exists a less refined parent of <script type="math/tex">C_I^l</script> at higher level <script type="math/tex">l_{higher}> l</script> that is active.</li>
+</ol>
+
+<p>Since the ghost cells live in different levels, it is necessary to define operations over those cells:</p>
+
+<ul>
+  <li><em>Ghost value propagate</em>: upsampling routine. Each data of level <script type="math/tex">l</script> is copied to a fine ghost children at level <script type="math/tex">l-1</script>.</li>
+  <li><em>Ghost value accumulate</em>: downsampling routine. Each data of level <script type="math/tex">l</script> accumulates contributions from any ghost children at level <script type="math/tex">l-1</script>.</li>
+</ul>
+
+<p><img src="/voronowledge/assets/blog-images/spgrid/accumulate.png" alt="Active cells and faces" class="image medium" /></p>
+
+<p class="image caption medium">Accumulate routine on the left. Propagate routine on the left. Adapted from the original paper.</p>
+
+<p><strong>Discrete gradient</strong> The pressure gradient values are defined in every face that borders an active cell as <script type="math/tex">g = \frac{p_i-p_k}{\Delta}</script>, for <script type="math/tex">i\neq k</script> and <script type="math/tex">i,k</script> cells with a shared face. The case where gradient lives between two cells of the same size is straight forward: <script type="math/tex">\Delta = h</script> is the distance between cells center. In the case where we have neighbors of different sizes, the <em>propagate</em> routine computed earlier guarantee that there will have a ghost point to compute the gradient. The issue here is which <script type="math/tex">\Delta</script> to use: in this case, <script type="math/tex">\Delta = (h+\frac{h}{2})2 = 3/4 h</script> for a single level transition. As a general rule, <script type="math/tex">\Delta = 3h_{min}/2</script>, where <script type="math/tex">h_{min}</script> is the size of smallest cell.</p>
+
+<p><img src="/voronowledge/assets/blog-images/spgrid/delta-cells.png" alt="Active cells and faces" class="image medium" /></p>
+
+<p><strong>Divergence</strong>
+The volume-weighted velocity divergence on cell centers is computed as follows:</p>
+
+<script type="math/tex; mode=display">V_{cell}\nabla\cdot \mathbf{u} = \sum_{faces}(\mathbf{u}_{face}\cdot\mathbf{n})A_{face}</script>
+
+<p>where <script type="math/tex">\mathbf{n}</script> is the outward normal vector and <script type="math/tex">A_{face}</script> is the area of that face. Similarly to gradient, ghost cells are used to compute the contributions of all faces. After all levels divergence was computed, tthe <em>accumulate</em> routine is called.</p>
+
+<p><strong>Laplacian</strong>
+Since propagate routine is performed at the beginning of the sequence, and the accumulate ate the end, the laplacian is computed combining, in the middle of sequence, the per-level gradient and divergence.</p>
+
+<h2 id="adaptive-multigrid-preconditioner">Adaptive multigrid preconditioner</h2>
+<p><img src="/voronowledge/assets/blog-images/spgrid/multigrid.png" alt="multigrid" class="image right" /></p>
+
+<p>To preconditionate the laplacian matrix and avoid instabilities in the simulation, a multigrid-based preconditioner  for adaptive grids is used.
+For each level of the hierarchy, all cells are guaranteed to exist at the immediately coarser level. Such cells are created by copying the values of their counterparts on the next level of the octree (coarser level).</p>
+
+<p class="image right caption">The pyramid used in the SPGrid is on the right. Yellow cells are introduced for the multigrid scheme.</p>
+
+<p>At the bottom of the multigrid V-cycle, a non multigrid is used to solve the coarse level problem. The upstroke of the V-cycle is the adjoint of the downstroke: ghost values of $$\mathbf{u}$ are propagated such that finer cells receive information from coarse neighbors.</p>
+
+<h2 id="advection-scheme">Advection scheme</h2>
+<p>During the simulation, most of the time it is of interest to compute quantities at locations other than specific grid -aligned locations, while balancing convenience and accuracy. To do this, an unstructured interpolation is performed. Ideally, an interpolation scheme should:</p>
+
+<p><img src="/voronowledge/assets/blog-images/spgrid/interpolation.png" alt="multigrid" class="image left" /></p>
+
+<p class="image left caption">Interpolation from cell centered values and from face centered values.</p>
+
+<ul>
+  <li>return the exact value if the target point coincides with a location where physical quantity is stored;</li>
+  <li>keep any advected quantity asymptotically unchanged.</li>
+</ul>
+
+<h3 id="per-cell-interpolation">Per-cell interpolation</h3>
+<p>Consider we want to intepolate a value at <script type="math/tex">(\xi_1,\xi_2)</script>. First, a bilinear interpolation is performed at the center of the cell, obtaining <script type="math/tex">\phi_c^I</script> from nodal values <script type="math/tex">\phi_{00},\cdots,\phi_{11}</script>: $$\phi_c^I = \frac{(\phi_{00} + \phi_{01} + \phi_{10} + \phi_{11})}{4}$$</p>
+
+<p>Next, a correction <script type="math/tex">\delta\phi_c = \phi_c - \phi_c^I</script> is computed and then, the final result for the interpolation scheme is obtained:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+\phi(\xi_1,\xi_2) &=& \phi_{00}(1-\xi_1)(1-\xi_2) + \phi_{10}\xi_1(1-\xi_2) \\
+    &+& \phi_{01}(1-\xi_1)\xi_2 + \phi_{11}\xi_1\xi_2 \\
+    &+& 2\delta\phi_c\cdot\min{(\xi_1,1-xi_1,\xi_2,1-\xi_2)}
+\end{eqnarray} %]]></script>
+
+<h3 id="per-face-interpolation">Per-face interpolation</h3>
+<p>In a three dimensional example, it is desired to obtain a value at the point <script type="math/tex">(\xi_1,\xi_2,\xi_3)</script>. First, assume the value is in the normal to the <script type="math/tex">x</script>-axis. First, the interpolated values <script type="math/tex">u_L</script> and <script type="math/tex">u_R</script> at the faces are obtained using the previous scheme. And then, a bilinear interpolation is performed: <script type="math/tex">u(</script>(\xi_1,\xi_2,\xi_3)<script type="math/tex">) = u_L(1-\xi_1) + u_R\xi_1</script>.</p>
+
+                    </section>
+                    <br /><br />
+                    <!-- <hr style="border: 1px dashed #aaa;"> -->
+                    
+                    <div id="post-footer">
+                        <div class="post-footer-avatar">
+                            <!-- <a class="icon fa-5x fa-user"> </a> -->
+                            <img src="/voronowledge/assets/images/pic01.jpg" class="post-footer-avatar">
+                        </div>
+                        <div class="post-footer-summary">
+                            <h2>RNakanishi</h2>
+                            <p>Rafael Umino Nakanishi</p>
+                            <p>PhD. candidate at ICMC-USP</p>
+                        </div>
+                        <div class="post-footer-headline">
+                            <p> <p>I love cakes. A lot.</p>
+</p>
+                            <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
+                        </div>
+
+                    </div>
+                    
+
+                </div>
+
+                <div class="right-content">
+                    <section id="sidebar">
+                        <h1 id="content">Content</h1>
+<h2 id="adaptive-discretization"><a href="#adaptive-discretization">Adaptive discretization</a></h2>
+<h3 id="pyramid-of-sparsely-populated-uniform-grids"><a href="#pyramid-of-sparsely-populated-uniform-grids">Pyramid of sparsely populated uniform grids</a></h3>
+<h3 id="discrete-operators"><a href="#discrete-operators">Discrete operators</a></h3>
+<h2 id="adaptive-multigrid-preconditioner"><a href="#adaptive-multigrid-preconditioner">Adaptive multigrid preconditioner</a></h2>
+<h2 id="advection-scheme"><a href="#advection-scheme">Advection scheme</a></h2>
+<h3 id="per-cell-interpolation"><a href="#per-cell-interpolation">Per-cell interpolation</a></h3>
+<h3 id="per-face-interpolation"><a href="#per-face-interpolation">Per-face interpolation</a></h3>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+    <div class="container">
+
+        <header>
+            <h2>Contact info</h2></header>
+        <p>Developed by FilipeCN and RNakanishi.</p>
+
+        <ul class="contact">
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
+                    <p>FilipeCN</p>
+                </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
+                    <p>RNakanishi</p>
+                </li>
+            
+            <!-- <li><a class="icon fa-envelope" ><span>Email</span></a></li> -->
+        </ul>
+    </div>
+    <div id="copyright"> © FilipeCN and RNakanishi. All rights reserved. </div>
+</div>
+
+</body>
+
+</html>

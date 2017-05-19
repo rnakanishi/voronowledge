@@ -9,21 +9,27 @@
         <!-- <script src="assets/js/util.js"></script> -->
 
         <title> Voronowledge </title>
-        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
+        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
         <!-- <link rel="stylesheet" href="/voronowledge/assets/css/voro.css" /> -->
         <link rel="stylesheet" href="/voronowledge/assets/css/media.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/homepage.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/style.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/icons.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/syntax.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/graph.css" />
     </head>
 
 
 <body>
     <div id="banner-common">
         <div id="common">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/voronowledge/assets/js/voronoi.js"></script>
             <div class="row">
+
     <span class="pennant">
         <a href="/voronowledge/index.html">
         <img src="/voronowledge/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
@@ -41,23 +47,15 @@
                     
                     
                     
-                        <a href="/voronowledge/archives/tag/jekyll.html">Jekyll</a>
+                        <a href="/voronowledge/archives/tag/interpolation.html">Interpolation</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
-                        <a href="/voronowledge/archives/tag/plo.html">Plo</a>
+                        <a href="/voronowledge/archives/tag/paper.html">Paper</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
-                        <a href="/voronowledge/archives/tag/tag.html">Tag</a>
-                    <!-- <a href="#">Test</a> -->
-                    <!-- <a href="#">Test</a> -->
-                    
-                        <a href="/voronowledge/archives/tag/test.html">Test</a>
-                    <!-- <a href="#">Test</a> -->
-                    <!-- <a href="#">Test</a> -->
-                    
-                        <a href="/voronowledge/archives/tag/tutorial.html">Tutorial</a>
+                        <a href="/voronowledge/archives/tag/pt-br.html">Pt-br</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
@@ -85,49 +83,42 @@
 
     <div id="main">
         <div class="container">
-            <section class="8u -2u">
                 <header>
-                    <h1> Just another test </h1>
+                    <h1> Archive</h1>
+                    <h2 class="big">Posts with 'pt-br'</h2>
                 </header>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                
+                    <h2><a href="/voronowledge/blog/2017/04/20/interpolation.html">Métodos de interpolação</a></h2>
+                    
+                        <h3>(pt-BR) Lagrange, Hermite and Spline interpolation methods.</h3>
+                    
+                    <p class="date"> 20 April, 2017</p>
 
-<p><img src="/voronowledge/assets/images/pic01.jpg" alt="image" class="image small" /></p>
+                    <br />
+                
 
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<h2 id="subtitle-here">Subtitle here</h2>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-<ul>
-  <li>One item</li>
-  <li>Two items</li>
-  <li>Three items</li>
-</ul>
-
-
-            </section>
         </div>
 
     </div>
 
-    
-<div id="footer">
+    <div id="footer">
     <div class="container">
 
         <header>
             <h2>Contact info</h2></header>
         <p>Developed by FilipeCN and RNakanishi.</p>
-        <p>PLOasd</p>
 
         <ul class="contact">
-            <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
-                <p>FilipeCN</p>
-            </li>
-            <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
-                <p>RNakanishi</p>
-            </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
+                    <p>FilipeCN</p>
+                </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
+                    <p>RNakanishi</p>
+                </li>
+            
             <!-- <li><a class="icon fa-envelope" ><span>Email</span></a></li> -->
         </ul>
     </div>

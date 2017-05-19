@@ -34,31 +34,21 @@
 
 #homepage-banner {
     position: relative;
-    background: url(../images/header.png) no-repeat bottom center;
-    background-attachment: fixed;
-    background-size: cover;
-    -moz-backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-transition: -moz-transform 0.5s ease;
-    -webkit-transition: -webkit-transform 0.5s ease;
-    -ms-transition: -ms-transform 0.5s ease;
-    transition: transform 0.5s ease;
+    /*background: url(../images/header.png) no-repeat bottom center;*/
     padding-bottom: 1px;
     padding: 3em 7em 0 7em;
     overflow: hidden;
     text-align: center;
+    width: 100%;
 }
 
-#homepage-banner:before {
+#homepage-banner::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    /*background: rgba(64, 64, 64, 0.125);*/
 }
 
 #homepage-banner h2 {
@@ -80,26 +70,32 @@
 
 /*********************************************************************************/
 
+#banner-common #voronoi-graph {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    width: 100%;
+    height: 215px;
+}
+
 #banner-common {
-    background-color: #ddd;
     display: block;
     padding: 200px 0 0 0;
     position: relative;
-    background: url(../images/header.png) no-repeat bottom center;
-    background-attachment: fixed;
-    background-size: cover;
-    -moz-backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-transition: -moz-transform 0.5s ease;
-    -webkit-transition: -webkit-transform 0.5s ease;
-    -ms-transition: -ms-transform 0.5s ease;
-    transition: transform 0.5s ease;
     padding-bottom: 1em;
     /*overflow: hidden;*/
     text-decoration: none;
     text-align: left;
+}
+
+#common {
+    overflow: hidden;
+    display: table;
+}
+
+#common {
+    display: table-cell;
 }
 
 #common a {
@@ -133,9 +129,15 @@
     /*text-align: center;*/
 }
 
+#common .row{
+    display: table-cell;
+}
+
 #common .navbar {
+    display: table-cell;
     width: 50%;
     background-color: #d9e;
+    min-width: 800px;
 }
 
 #common .nav {
@@ -168,7 +170,6 @@
     background-color: #FFF;
 }
 
-
 /*********************************************************************************/
 
 
@@ -177,12 +178,18 @@
 
 /*********************************************************************************/
 
-#main:before {
+#page{
+    width: 100%;
+    background: #fff;
+    z-index: 1;
+}
+
+#main::before {
     top: 0;
 }
 
 #main {
-    width: 1200px;
+    width: 1000px;
     margin: auto;
     position: relative;
     display: table;
@@ -191,20 +198,26 @@
     padding-top: 2em;
 }
 
+#main .container {
+    width: 800px;
+    margin: auto;
+}
+
 #main h1 {
     /*padding-top: 1em;*/
-    padding-bottom: 0.25em;
-    color: #444;
+    /*padding-bottom: 0.25em;*/
+    color: #333;
     font-weight: 300;
     line-height: 1em;
     font-size: 2.5em;
 }
 
 #main h2 {
+    font-size: 170%;
     font-family: "Raleway", sans-serif;
-    color: #444;
+    color: #333;
     font-weight: 100;
-    font-size: 1.5em;
+    line-height: 1.25em;
     text-align: justify;
     margin-top: 1em;
 }
@@ -212,23 +225,54 @@
 #main h2.big {
     font-style: italic;
     line-height: 1.5em;
-    font-size: 200%;>
+    font-size: 200%;
 }
 
 #main a {
-    color: inherit;
     text-decoration: none;
+    -moz-transition: color 0.35s ease-in-out;
+    -webkit-transition: color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out;
+    -ms-transition: color 0.35s ease-in-out;
+    transition: color 0.35s ease-in-out;
+    color: #777;
 }
 
 #main a:hover {
+    -moz-transition: color 0.35s ease-in-out;
+    -webkit-transition: color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out;
+    -ms-transition: color 0.35s ease-in-out;
+    transition: color 0.35s ease-in-out;
     color: inherit;
     text-decoration: underline;
 }
 
+.blog a {
+    -moz-transition: color 0.35s ease-in-out;
+    -webkit-transition: color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out;
+    -ms-transition: color 0.35s ease-in-out;
+    transition: color 0.35s ease-in-out;
+    color: #77b5de !important;
+}
+
+.blog a:hover {
+    -moz-transition: color 0.35s ease-in-out;
+    -webkit-transition: color 0.35s ease-in-out;
+    -o-transition: color 0.35s ease-in-out;
+    -ms-transition: color 0.35s ease-in-out;
+    transition: color 0.35s ease-in-out;
+    color: #5189ba !important;
+}
+
 #main h3 {
+    font-size: 110%;
     font-family: "Raleway", sans-serif;
-    font-weight: 100;
+    font-weight: bold;
+    font-style: italic;
     text-align: justify;
+    /*color: #333;*/
 }
 
 #main p {
@@ -256,7 +300,6 @@
 #main .sidebar-right .left-content {
     display: table-cell;
     text-align: justify;
-    overflow: hidden;
     margin-right: 1em;
     padding-right: 1em;
     /*position: relative;*/
@@ -270,6 +313,8 @@
     padding-left: 1em;
     text-align: justify;
     overflow: hidden;
+    border-left: 1px dashed;
+    color: inherit;
     /*text-align: right;*/
     /*position: relative;*/
     /*width: 27.5%;*/
@@ -292,11 +337,57 @@
     overflow: hidden;
     margin-left: 1em;
     padding-left: 1em;
+    border-left: 1px dashed;
     /*position: relative;*/
     /*float: left;*/
     width: 75%;
 }
 
+#main .sidebar-right .right-content h1 {
+    font-family: "Raleway";
+}
+
+#main .sidebar-right .right-content:before {
+    border-left: 1px solid;
+}
+
+#main .sidebar-right .right-content h2 {
+    font-family: "Raleway";
+    font-size: 14pt;
+    margin-left: 1em;
+}
+
+#main .sidebar-right .right-content h3 {
+    font-family: "Raleway";
+    font-size: 12pt;
+    margin-left: 2em;
+}
+
+#main .sidebar-left .left-content h1 {
+    font-family: "Raleway";
+}
+
+#main .sidebar-left .left-content:before {
+    border-left: 1px solid;
+}
+
+#main .sidebar-left .left-content h2 {
+    font-family: "Raleway";
+    font-size: 14pt;
+    margin-left: 1em;
+}
+
+#main .sidebar-left .left-content h3 {
+    font-family: "Raleway";
+    font-size: 12pt;
+    margin-left: 2em;
+}
+
+#sidebar {
+    position: -webkit-sticky;  // required for Safari
+    position: sticky;
+    top: 10px; // required as well
+}
 
 /*********************************************************************************/
 
@@ -306,17 +397,24 @@
 
 /*********************************************************************************/
 
+#homepage-banner #voronoi-graph {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 570px;
+    z-index: 0;
+}
+
 #homepage-banner .row {
     margin: auto;
-    min-width: 300px;
+    min-width: 500px;
     position: relative;
     z-index: 1;
     padding-top: 4em;
     padding-bottom: 3em;
     background-color: #FFF;
-}
 
-#homepage-banner .row {
     width: 35%;
     margin-left: 33.3333%;
     text-align: center;
@@ -468,7 +566,7 @@
 }
 
 #featured h1 {
-    color: #444;
+    color: #333;
     display: block;
     font-size: 2.5em;
 }

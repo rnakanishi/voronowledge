@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1">
@@ -9,21 +9,27 @@
         <!-- <script src="assets/js/util.js"></script> -->
 
         <title> Voronowledge </title>
-        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
+        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
         <!-- <link rel="stylesheet" href="/voronowledge/assets/css/voro.css" /> -->
         <link rel="stylesheet" href="/voronowledge/assets/css/media.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/homepage.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/style.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/icons.css" />
         <link rel="stylesheet" href="/voronowledge/assets/css/syntax.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/graph.css" />
     </head>
 
 
-    <body>
-        <div id="banner-header">
-            <div id="homepage-banner">
-                <div class="row">
+<body>
+    <div id="banner-header">
+        <div id="homepage-banner">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/voronowledge/assets/js/voronoi.js"></script>
+            <div class="row">
+
     <span class="pennant">
         <a href="/voronowledge/index.html">
         <img src="/voronowledge/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
@@ -41,23 +47,15 @@
                     
                     
                     
-                        <a href="/voronowledge/archives/tag/jekyll.html">Jekyll</a>
+                        <a href="/voronowledge/archives/tag/interpolation.html">Interpolation</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
-                        <a href="/voronowledge/archives/tag/plo.html">Plo</a>
+                        <a href="/voronowledge/archives/tag/paper.html">Paper</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
-                        <a href="/voronowledge/archives/tag/tag.html">Tag</a>
-                    <!-- <a href="#">Test</a> -->
-                    <!-- <a href="#">Test</a> -->
-                    
-                        <a href="/voronowledge/archives/tag/test.html">Test</a>
-                    <!-- <a href="#">Test</a> -->
-                    <!-- <a href="#">Test</a> -->
-                    
-                        <a href="/voronowledge/archives/tag/tutorial.html">Tutorial</a>
+                        <a href="/voronowledge/archives/tag/pt-br.html">Pt-br</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
@@ -80,17 +78,17 @@
     </nav>
 </div>
 
-            </div>
         </div>
+    </div>
 
-        <div id="featured">
-            <div class="container">
-                <header>
-                    <h1> Homepage </h1>
-                </header>
-                <section class="8u -2u">
+    <div id="featured">
+        <div class="container">
+            <header>
+                <h1> Homepage </h1>
+            </header>
+            <section class="8u -2u">
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
@@ -99,32 +97,34 @@
 <p>Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed to float in the middle of an immense dark sphere, whose upper half was strewn with silver. Looking down into the dark gulf below, I could see a ruddy light streaming through a rift in the clouds.</p>
 
 
-                </section>
-            </div>
-
+            </section>
         </div>
 
-        
-<div id="footer">
+    </div>
+
+    <div id="footer">
     <div class="container">
 
         <header>
             <h2>Contact info</h2></header>
         <p>Developed by FilipeCN and RNakanishi.</p>
-        <p>PLOasd</p>
 
         <ul class="contact">
-            <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
-                <p>FilipeCN</p>
-            </li>
-            <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
-                <p>RNakanishi</p>
-            </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
+                    <p>FilipeCN</p>
+                </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
+                    <p>RNakanishi</p>
+                </li>
+            
             <!-- <li><a class="icon fa-envelope" ><span>Email</span></a></li> -->
         </ul>
     </div>
     <div id="copyright"> © FilipeCN and RNakanishi. All rights reserved. </div>
 </div>
 
-    </body>
+</body>
+
 </html>

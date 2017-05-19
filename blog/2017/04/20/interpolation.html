@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1">
+        <meta name="viewport" content="user-scalable=yes,width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <script src="assets/js/util.js"></script> -->
+
+        <title> Voronowledge </title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
+        <!-- <link rel="stylesheet" href="/voronowledge/assets/css/voro.css" /> -->
+        <link rel="stylesheet" href="/voronowledge/assets/css/media.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/homepage.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/style.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/icons.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/syntax.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/graph.css" />
+    </head>
+
+
+<body>
+    <div id="banner-common">
+        <div id="common">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/voronowledge/assets/js/voronoi.js"></script>
+            <div class="row">
+
+    <span class="pennant">
+        <a href="/voronowledge/index.html">
+        <img src="/voronowledge/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
+        <h1>Voronowledge</h1>
+        </a>
+    </span>
+</div>
+
+<div class="navbar">
+    <nav class="nav">
+        <ul>
+            <li><a href="/voronowledge/index.html">Home</a></li>
+            <li  class="dropdown"><a href="/voronowledge/blog/">Posts</a>
+                <div class="dropdown-content">
+                    
+                    
+                    
+                        <a href="/voronowledge/archives/tag/interpolation.html">Interpolation</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/paper.html">Paper</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/pt-br.html">Pt-br</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                </div>
+            </li>
+            <!-- <li class="dropdown"><a href="/voronowledge/blog.html">Dropdown</a>
+                <span>
+                    <ul class="dropdown-content">
+                        <li><a>Lorem ipsum dolor</a></li>
+                        <li><a>Phasellus consequat</a></li>
+                        <li><a>Magna phasellus</a></li>
+                        <li><a>Etiam dolore nisl</a></li>
+                        <li><a>Veroeros feugiat</a></li>
+                    </ul>
+                </span>
+            </li> -->
+            <!-- <li><a href="/voronowledge/index.html">Portfolio</a></li> -->
+            <li><a href="/voronowledge/about.html">About</a></li>
+        </ul>
+    </nav>
+</div>
+
+        </div>
+    </div>
+
+    <div id="page">
+        <div id="main">
+            <div class="sidebar-right">
+                <div class="left-content">
+                    <header class="main">
+                        <h1> Métodos de interpolação </h1> 
+                        <h3>By RNakanishi</h3> 
+                        <br>
+                        <ul class="tags-list">
+                            
+                            <li class="tag"><strong>Tags: </strong></li>
+                             
+                            <a class="tag-button" href="/voronowledge/archives/tag/interpolation.html">Interpolation</a> 
+                            <a class="tag-button" href="/voronowledge/archives/tag/pt-br.html">Pt-br</a> 
+                        </ul>
+                    </header>
+
+                    <section class="blog">
+                        <p>Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.</p>
+
+<figure class="graph-full"> </figure>
+
+<p class="graph caption">A partir dos pontos amostrados, queremos saber o comportamento de uma possível função que passa por tais pontos.</p>
+
+<p>É possível encontrar vários métodos de interpolação. Em nosso escopo, trataremos dos métodos pioneiros que interpolam a função utilizando todos os pontos dados (<em>interpolação de Lagrange</em>) e métodos que também conseguem utilizar informação de derivada, quando presente (<em>interpolação de Hermite</em>) Entretanto, como veremos mais a frente, seu principal problema é que o grau do polinômio gerado cresce com o número de amostras. E isso motiva o uso de métodos que interpolam com menos pontos, mas que conseguem apresentar bons resultados (<em>Splines lineares</em> e <em>cúbicas</em>).</p>
+
+<h2 id="polinômios-de-lagrange">Polinômios de Lagrange</h2>
+
+<blockquote class="theorem pt-br">
+  <p>Sejam <script type="math/tex">x_0, x_1, ..., x_n</script>, <script type="math/tex">n+1</script> pontos distintos e <script type="math/tex">f</script> o valor da função nesses pontos. Então existe apenas um polinômio <script type="math/tex">P(x)</script> de grau <script type="math/tex">n</script> tal que $$P(x_k) = f(x_k)\quad\text{para } k = 0,1,…,n.$$
+Esse polinômio é dado por $$ P(x) = \sum_{k=0}^n f(x_k)L_k(x) $$
+em que, para cada <script type="math/tex">k = 0, 1, ..., n</script>, $$ L_k(x) = \frac{\prod_{i=0, i\neq k}^n (x-x_i)}{\prod_{i=0, i\neq k}^n(x_k-x_i)}. $$</p>
+</blockquote>
+
+<p>Como pode-se observar, a construção de um polinômio é capaz de aproximar bem a curva desejada. Entretanto, caso a função original não seja polinomial, mas sim de outra natureza (trigonométrica, exponencial, etc), a interpolação gera um erro. É de interesse saber qual a grandeza desse erro para que as estimativas sejam o mais precisas possíveis. Para isso, estima-se um limitante superior para o erro:</p>
+
+<blockquote class="theorem pt-br">
+  <p>Suponha <script type="math/tex">x_0, x_1, ..., x_n</script> valores distintos dentro do intervalo <script type="math/tex">[a,b]</script> e <script type="math/tex">f \in C^{n+1}[a,b]</script>. Então, para cada <script type="math/tex">x</script> no intervalo, existe um valor <script type="math/tex">\xi</script> desconhecido entre os valores <script type="math/tex">x_0, x_1, ..., x_n</script> e dentro de <script type="math/tex">(a,b)</script> tal que $$ f(x) = P(x) + \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)(x-x_1)\cdots(x-x_n),$$ com <script type="math/tex">P(x)</script> sendo o polinômio interpolador de Lagrange. O termo somado ao polinômio interpolador é o erro de interpolação do método.</p>
+</blockquote>
+
+<h3 id="implementação">Implementação</h3>
+<p>O código implementado em <code class="highlighter-rouge">MatLab</code> é bem simples e envolve apenas o cálculo do polinômio <script type="math/tex">L_k(x)</script>:</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</pre></td><td class="code"><pre><span class="n">L</span> <span class="o">=</span> <span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="nb">length</span><span class="p">(</span><span class="n">x</span><span class="p">));</span> <span class="c1">% Polinomio de Lagrange</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+    <span class="n">div</span> <span class="o">=</span> <span class="p">(</span> <span class="n">x</span> <span class="o">-</span> <span class="n">xi</span> <span class="p">);</span> <span class="c1">% Dividendo do produtorio</span>
+    <span class="n">div</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="n">den</span> <span class="o">=</span> <span class="p">(</span> <span class="n">xi</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="n">xi</span> <span class="p">);</span> <span class="c1">% Denominador do produtorio</span>
+    <span class="n">den</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="n">L</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="nb">prod</span><span class="p">(</span><span class="n">div</span><span class="p">)</span> <span class="p">/</span> <span class="nb">prod</span><span class="p">(</span><span class="n">den</span><span class="p">);</span>
+<span class="k">end</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">yi</span> <span class="o">*</span> <span class="n">L</span><span class="p">;</span> <span class="c1">% Valor avaliado na interpolacao</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>No código acima, temos que <code class="highlighter-rouge">xi</code> são os pontos de interpolação; <code class="highlighter-rouge">yi</code> são os valores da função que se deseja interpolar, avaliado nos pontos <code class="highlighter-rouge">xi</code>; e <code class="highlighter-rouge">x</code> são os pontos que se deseja calcular, obtendo assim, os valores em <code class="highlighter-rouge">y</code>.</p>
+
+<h3 id="exemplo-gráfico">Exemplo gráfico</h3>
+<figure class="lagrange"> </figure>
+
+<h2 id="interpolação-de-hermite">Interpolação de Hermite</h2>
+<p>Para construção do polinômio de hermite, é necessário antes apresentar duas ferramentas: diferenças divididas e polinômios de Newton.</p>
+
+<h3 id="diferenças-divididas">Diferenças divididas</h3>
+
+<h3 id="polinômios-de-newton">Polinômios de Newton</h3>
+
+<h3 id="implementação-1">Implementação</h3>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre></td><td class="code"><pre><span class="n">z</span> <span class="o">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">);</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">ones</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="nb">length</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+
+<span class="n">z</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">xi</span><span class="p">;</span>
+<span class="n">z</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">xi</span><span class="p">;</span>
+
+<span class="c1">% Matriz de Hermite</span>
+<span class="n">Q</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">yi</span><span class="p">;</span>
+<span class="n">Q</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">yi</span><span class="p">;</span>
+<span class="n">Q</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dyi</span><span class="p">;</span>
+
+<span class="n">Q</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span> <span class="n">Q</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">Q</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="o">.</span><span class="p">/</span> <span class="k">...</span>
+                <span class="p">(</span> <span class="n">z</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">)</span> <span class="p">);</span>
+
+<span class="c1">% Completando a matriz</span>
+<span class="k">for</span> <span class="nb">j</span><span class="o">=</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span>
+    <span class="k">for</span> <span class="nb">i</span><span class="o">=</span><span class="nb">j</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span>
+        <span class="n">Q</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">Q</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">/</span> <span class="k">...</span>
+                    <span class="p">(</span><span class="n">z</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">z</span><span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="nb">j</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">for</span> <span class="nb">i</span><span class="o">=</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span> <span class="c1">% forma de Newton</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">N</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="o">.*</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">z</span><span class="p">(</span><span class="n">k</span><span class="p">));</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+<span class="n">y</span> <span class="o">=</span> <span class="nb">diag</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span><span class="o">'</span> <span class="o">*</span> <span class="n">N</span><span class="p">;</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>bla</p>
+
+<h2 id="interpolação-por-partes">Interpolação por partes</h2>
+<p>Os métodos apresentados anteriormente conseguem encontrar uma interpolação para os pontos dados utilizando apenas um polinômio. Entretanto, caso haja muitos pontos a serem interpolados, o grau do polinômio aumenta e isso pode criar efeitos oscilatórios indesejados.</p>
+
+<figure class="bad-poly"> </figure>
+
+<p>Uma alternativa para tentar contornar esse problema é criar polinômios interpoladores utilizando subintervalos.</p>
+
+<h3 id="splines-lineares">Splines lineares</h3>
+
+<h3 id="splines-cúbicas">Splines cúbicas</h3>
+
+<!-- Necessário para usar o D3 -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<!-- Exemplo teaser de interpoação -->
+<script>
+// Inicializando SVG
+var margin = {top: 20, right: 15, bottom: 30, left: 35},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+var svg = d3.select(".graph-full").append("svg")
+    .attr("width", width+margin.left+margin.right)
+    .attr("height", height+margin.top+margin.bottom)
+    .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Definindo eixos
+var x = d3.scaleLinear().domain([0, 4]).range([0, width]);
+var y = d3.scaleLinear().domain([-0.5, 1.2]).range([height, 0]);
+var line = d3.line()
+            .x(function(d) { return x(d.x); })
+            .y(function(d) { return y(d.y); });
+
+svg.append("g")
+    .attr("class","axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom().scale(x));
+
+svg.append("g")
+    .attr("class","axis")
+    .call(d3.axisLeft(y));
+
+// Scatter de pontos
+var data = [
+        {"x": 0.25, "y": 0.25},
+        {"x": 1.00, "y": 0.47},
+        {"x": 1.25, "y": 0.95},
+        {"x": 1.75, "y": 0.99},
+        {"x": 3.10, "y": 0.15},
+        {"x": 3.47, "y": 0.27}
+    ];
+svg.selectAll("dot")
+    .data(data)
+  .enter().append("circle")
+    .attr("class","curve")
+    .attr("r", 3)
+    .attr("cx", function(d,i) { return x(d.x); })
+    .attr("cy", function(d) { return y(d.y); })
+
+// Plot de linhas
+d3.csv("/voronowledge/assets/data/interpolation.csv",
+    function(interp){
+        interp.forEach( function(d) {
+                d.x = +d.x;
+                d.y = +d.y;
+            });
+
+        svg.append("path")
+            .attr("class","curve dashed")
+            .attr("d", line(interp));
+    }
+);
+</script>
+
+<!-- Exemplo de polinômio de alto grau e as oscilações -->
+<script>
+</script>
+
+
+                    </section>
+                    <br /><br />
+                    <!-- <hr style="border: 1px dashed #aaa;"> -->
+                    
+                    <div id="post-footer">
+                        <div class="post-footer-avatar">
+                            <!-- <a class="icon fa-5x fa-user"> </a> -->
+                            <img src="/voronowledge/assets/images/pic01.jpg" class="post-footer-avatar">
+                        </div>
+                        <div class="post-footer-summary">
+                            <h2>RNakanishi</h2>
+                            <p>Rafael Umino Nakanishi</p>
+                            <p>PhD. candidate at ICMC-USP</p>
+                        </div>
+                        <div class="post-footer-headline">
+                            <p> <p>I love cakes. A lot.</p>
+</p>
+                            <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
+                        </div>
+
+                    </div>
+                    
+
+                </div>
+
+                <div class="right-content">
+                    <section id="sidebar">
+                        <h1 id="conteúdo">Conteúdo</h1>
+<h2 id="polinômios-de-lagrange"><a href="#polinômios-de-lagrange">Polinômios de Lagrange</a></h2>
+<h2 id="interpolação-de-hermite"><a href="#interpolação-de-hermite">Interpolação de Hermite</a></h2>
+<h3 id="diferenças-divididas"><a href="#diferenças-divididas">Diferenças divididas</a></h3>
+<h3 id="polinômios-de-newton"><a href="#polinômios-de-newton">Polinômios de Newton</a></h3>
+<h2 id="interpolação-por-partes"><a href="#interpolação-por-partes">Interpolação por partes</a></h2>
+<h3 id="splines"><a href="#splines">Splines</a></h3>
+<h3 id="splines-cúbicas"><a href="#splines-cúbicas">Splines cúbicas</a></h3>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+    <div class="container">
+
+        <header>
+            <h2>Contact info</h2></header>
+        <p>Developed by FilipeCN and RNakanishi.</p>
+
+        <ul class="contact">
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
+                    <p>FilipeCN</p>
+                </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
+                    <p>RNakanishi</p>
+                </li>
+            
+            <!-- <li><a class="icon fa-envelope" ><span>Email</span></a></li> -->
+        </ul>
+    </div>
+    <div id="copyright"> © FilipeCN and RNakanishi. All rights reserved. </div>
+</div>
+
+</body>
+
+</html>
