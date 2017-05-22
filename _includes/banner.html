@@ -17,7 +17,7 @@
                     {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
                     {% assign alltags = site_tags | split:',' | sort %}
                     {% for tag in alltags %}
-                        <a href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{ tag | capitalize }}</a>
+                        <a href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | replace:'-',' ' | capitalize }}</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     {% endfor %}

@@ -29,7 +29,7 @@
                         {% if page.tags %}
                         <li class="tag"><strong>Tags: </strong></li>
                         {% endif %} {% for tag in page.tags %}
-                        <a class="tag-button" href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | capitalize }}</a> {%endfor%}
+                        <a class="tag-button" href="{{site.baseurl}}/archives/tag/{{tag}}.html">{{tag | replace:'-',' ' | capitalize }}</a> {%endfor%}
                     </ul>
                 </header>
 

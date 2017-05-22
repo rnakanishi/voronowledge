@@ -16,7 +16,7 @@
         <div class="container">
                 <header>
                     <h1> Archive</h1>
-                    <h2 class="big">Posts with '{{ page.title }}'</h2>
+                    <h2 class="big">Posts with '{{ page.title | replace:'-',' ' | capitalize}}'</h2>
                 </header>
 
                 {% for post in page.posts %}
