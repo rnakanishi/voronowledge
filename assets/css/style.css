@@ -38,6 +38,25 @@ hr {
     padding: 0 8em 0 8em;
 }
 
+table{
+    margin: 1em auto 1em auto;
+}
+
+th, td,tr{
+    text-align: center;
+    padding: 0 10px 0 10px;
+}
+
+.margin-first thead,
+.margin-first th {
+    border-bottom: 1px solid #555;
+}
+
+.margin-first td:first-child,
+.margin-first th:first-child{
+    border-right: 1px solid #555;
+}
+
 blockquote {
     display: grid;
     background: #f9f9f9;
@@ -45,12 +64,6 @@ blockquote {
     margin: 1.5em 10px 0.5em 1.5em;
     padding: 0.5em 1.5em;
     quotes: "\201C""\201D""\2018""\2019";
-}
-
-blockquote.theorem {
-    display: block;
-    background: #fff;
-    quotes: none;
 }
 
 blockquote:before {
@@ -62,16 +75,35 @@ blockquote:before {
     vertical-align: -0.4em;
 }
 
-blockquote.theorem:before {
+blockquote.theorem,
+blockquote.definition {
     display: block;
-    content: "Theorem";
+    background: #fff;
+    quotes: none;
+}
+
+blockquote.theorem:before,
+blockquote.definition:before {
+    display: block;
     text-decoration: underline;
     font-size: 1.5em;
     line-height: 1.1em;
 }
 
+blockquote.theorem::before{
+    content: "Theorem";
+}
+
+blockquote.definition::before{
+    content: "Definition";
+}
+
 blockquote.theorem.pt-br:before {
     content: "Teorema";
+}
+
+blockquote.definition.pt-br:before {
+    content: "Definição";
 }
 
 blockquote p {
