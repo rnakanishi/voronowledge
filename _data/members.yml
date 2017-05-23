@@ -3,6 +3,7 @@ FilipeCN:
   shortname: FilipeCN
   position: PhD. canditate at ICMC-USP
   github: FilipeCN
+  description: I am a pirate! Ahoy!
   picture: /assets/images/filipecn-profile.jpg
 
 RNakanishi:
@@ -11,5 +12,8 @@ RNakanishi:
   github: RNakanishi
   twitter: RNaka_
   position: PhD. candidate at ICMC-USP
-  description: I love cakes. A lot.
-  picture: /assets/images/pic01.jpg
+  description: |
+    A big dreamer aiming for a place where programming and computer graphics can live together in harmony.
+
+    And I love cakes. A lot.
+  picture: /assets/images/rnakanishi-profile.jpg

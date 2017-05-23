@@ -1,5 +1,7 @@
-var width = d3.select("#voronoi-graph").node().getBoundingClientRect().width;
-var height = d3.select("#voronoi-graph").node().getBoundingClientRect().height;
+var width = +d3.select("#voronoi-graph").node().getBoundingClientRect().width;
+var height = +d3.select("#voronoi-graph").node().getBoundingClientRect().height;
+
+console.log("Created: " + width + " " + height);
 
 var svg = d3.select("#voronoi-graph").append("svg")
     .attr("width", width)

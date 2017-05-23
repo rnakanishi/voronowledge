@@ -73,10 +73,11 @@
 #banner-common #voronoi-graph {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 120px;
     z-index: 0;
     width: 100%;
-    height: 215px;
+    height: 100px;
+    overflow: hidden;
 }
 
 #banner-common {
@@ -401,9 +402,9 @@
     position: absolute;
     left: 0;
     top: 0;
+    z-index: 0;
     width: 100%;
     height: 570px;
-    z-index: 0;
 }
 
 #homepage-banner .row {
@@ -488,9 +489,8 @@
     display: block;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100;
     text-align: center;
-    position: absolute;
     right: 0;
     /*top: 0.5em;*/
     cursor: default;
