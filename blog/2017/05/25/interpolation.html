@@ -47,6 +47,14 @@
                     
                     
                     
+                        <a href="/voronowledge/archives/tag/algebra.html">Algebra</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/continuum-mechanics.html">Continuum mechanics</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
                         <a href="/voronowledge/archives/tag/interpolation.html">Interpolation</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
@@ -55,7 +63,7 @@
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
-                        <a href="/voronowledge/archives/tag/pt-br.html">Pt-br</a>
+                        <a href="/voronowledge/archives/tag/pt-br.html">Pt br</a>
                     <!-- <a href="#">Test</a> -->
                     <!-- <a href="#">Test</a> -->
                     
@@ -94,7 +102,7 @@
                             <li class="tag"><strong>Tags: </strong></li>
                              
                             <a class="tag-button" href="/voronowledge/archives/tag/interpolation.html">Interpolation</a> 
-                            <a class="tag-button" href="/voronowledge/archives/tag/pt-br.html">Pt-br</a> 
+                            <a class="tag-button" href="/voronowledge/archives/tag/pt-br.html">Pt br</a> 
                         </ul>
                     </header>
 
@@ -153,15 +161,186 @@ em que, para cada <script type="math/tex">k = 0, 1, ..., n</script>, $$ L_k(x) =
 
 <p>No código acima, temos que <code class="highlighter-rouge">xi</code> são os pontos de interpolação; <code class="highlighter-rouge">yi</code> são os valores da função que se deseja interpolar, avaliado nos pontos <code class="highlighter-rouge">xi</code>; e <code class="highlighter-rouge">x</code> são os pontos que se deseja calcular, obtendo assim, os valores em <code class="highlighter-rouge">y</code>.</p>
 
-<h3 id="exemplo-gráfico">Exemplo gráfico</h3>
-<figure class="lagrange"> </figure>
+<!-- ### Exemplo gráfico
+<figure class="lagrange"> </figure> -->
 
 <h2 id="interpolação-de-hermite">Interpolação de Hermite</h2>
 <p>Para construção do polinômio de hermite, é necessário antes apresentar duas ferramentas: diferenças divididas e polinômios de Newton.</p>
 
 <h3 id="diferenças-divididas">Diferenças divididas</h3>
 
+<blockquote class="definition pt-br">
+  <p>Diferenças divididas são definidas recursivamente. Diferenças divididas de ordem-<script type="math/tex">0</script>: $$f[x_i] = f(x_i),\quad i=0,1,\cdots,n$$.
+Diferença dividida de ordem-<script type="math/tex">1</script>: $$f[x_i, x_{i+1}] = \frac{f[x_{i+1}]-f[x_i]}{x_{i+1}-x_{i}} = \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_{i}}$$.
+Então, uma diferença dividida de ordem-<script type="math/tex">k</script>, entre <script type="math/tex">x_i, x_{i+1}, \cdots, x_{i+k}</script>, é definido como: $$f[x_i, x_{i+1}, \cdots, x_{i+k}] = \frac{f[x_{i+1}, x_{i+2}, \cdots, x_{i+k}] - f[x_i, x_{i+1}, \cdots, x_{i+k-1}]}{x_{i+k}-x_i},$$ com <script type="math/tex">k = 1,\cdots,n</script> e <script type="math/tex">i = 0, 1,\cdots,n-k</script>.</p>
+</blockquote>
+
+<p>Uma forma mais simples de visualizar as diferenças divididas é montando uma tabela das diferenças:</p>
+
+<table class="margin-first">
+  <thead>
+    <tr>
+      <th><script type="math/tex">x</script></th>
+      <th>ordem-<script type="math/tex">0</script></th>
+      <th>ordem-<script type="math/tex">1</script></th>
+      <th>ordem-<script type="math/tex">2</script></th>
+      <th>ordem-<script type="math/tex">3</script></th>
+      <th><script type="math/tex">\cdots</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">x_0</script></td>
+      <td><script type="math/tex">f[x_0]</script></td>
+      <td><script type="math/tex">f[x_0,x_1]</script></td>
+      <td><script type="math/tex">f[x_0,x_1,x_2]</script></td>
+      <td><script type="math/tex">f[x_0,x_1,x_2,x_3]</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_1</script></td>
+      <td><script type="math/tex">f[x_1]</script></td>
+      <td><script type="math/tex">f[x_2,x_1]</script></td>
+      <td><script type="math/tex">f[x_1,x_2,x_3]</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_2</script></td>
+      <td><script type="math/tex">f[x_2]</script></td>
+      <td><script type="math/tex">f[x_3,x_2]</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_3</script></td>
+      <td><script type="math/tex">f[x_3]</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
 <h3 id="polinômios-de-newton">Polinômios de Newton</h3>
+<p>O polinômio interpolador na forma de Newton é dada na seguinte forma: $$P_n(x) = \alpha_0 + \alpha_1(x-x_0) + \cdots + \alpha_n(x-x_0)(x-x_1)\cdots(x-x_{n-1}).$$
+E cada coeficiente <script type="math/tex">\alpha_k</script> é determinado utilizando diferenças divididas de ordem <script type="math/tex">k</script>:</p>
+
+<table class="margin-first">
+  <thead>
+    <tr>
+      <th><script type="math/tex">x</script></th>
+      <th>ordem-<script type="math/tex">0</script></th>
+      <th>ordem-<script type="math/tex">1</script></th>
+      <th>ordem-<script type="math/tex">2</script></th>
+      <th><script type="math/tex">\cdots</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">x_0</script></td>
+      <td><script type="math/tex">f[x_0] = \alpha_0</script></td>
+      <td><script type="math/tex">f[x_0,x_1] = \alpha_1</script></td>
+      <td><script type="math/tex">f[x_0,x_1,x_2] = \alpha_2</script></td>
+      <td><script type="math/tex">\cdots</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="interpolação-com-derivadas">Interpolação com derivadas</h3>
+
+<blockquote class="theorem pt-br">
+  <p>Seja uma função <script type="math/tex">f \in C^n[a,b]</script> com derivadas contínuas. Dada as condições em cada nó <script type="math/tex">x_i</script> como: $$P_m^{(j)} = f^{(j)} = c_{ij}, \quad 0\leq j\leq k_i-1\quad\text{e } 0\leq i\leq n$$ com <script type="math/tex">m+1 = \kappa_0+\kappa_1+\cdots+\kappa_n</script>, <script type="math/tex">\kappa_i</script> sendo o número de condições em um nó <script type="math/tex">x_i</script>, ou seja, informações de derivada fornecidos.
+Então, existe um único polinômio <script type="math/tex">P_m(x)</script> que satisfaz as condições de interpolação de Hermite.</p>
+</blockquote>
+
+<p>Uma maneira de se obter os coeficientes do polinômio interpolador de Hermite é utilizando a tabela de diferenças divididas e o polinômio na forma de Newton.
+Para montarmos a tabela de diferenças divididas, repetimos os pontos em que a derivada está presente. Nesse caso, temos que $$f[x_k,x_k] = \lim_{h\to 0}\frac{f(x_k+h)-f(x_k)}{(x_k+h)-x_k} = f’(x_k).$$ E no caso geral, $$f[x_{k_1},\cdots,x_{k_m}] = \frac{1}{(m-1)!}f^{(m-1)}(x_k).$$</p>
+
+<p>Então, Dados <script type="math/tex">n+1</script> pares de pontos e suas derivadas, queremos obter <script type="math/tex">P_{2n+1}(x)</script> que satisfaz todas as condições dadas: $$P_{2n+1}(x_i) = c_{i0},\quad P_{2n+1}’(x_i)=x_{i1},\quad i=0,\cdots,n.$$</p>
+
+<table class="margin-first">
+  <thead>
+    <tr>
+      <th><script type="math/tex">x</script></th>
+      <th>ordem-<script type="math/tex">0</script></th>
+      <th>ordem-<script type="math/tex">1</script></th>
+      <th>ordem-<script type="math/tex">2</script></th>
+      <th>ordem-<script type="math/tex">3</script></th>
+      <th><script type="math/tex">\cdots</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">x_0</script></td>
+      <td><script type="math/tex">f[x_0]=c_{00}</script></td>
+      <td><script type="math/tex">f[x_0,x_0]=c_{01}</script></td>
+      <td><script type="math/tex">f[x_0,x_0,x_1]</script></td>
+      <td><script type="math/tex">f[x_0,x_0,x_1,x_1]</script></td>
+      <td><script type="math/tex">\cdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_0</script></td>
+      <td><script type="math/tex">f[x_0]</script></td>
+      <td><script type="math/tex">f[x_0,x_1]</script></td>
+      <td><script type="math/tex">f[x_0,x_1,x_1]</script></td>
+      <td><script type="math/tex">f[x_0,x_1,x_1,x_2]</script></td>
+      <td><script type="math/tex">\cdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_1</script></td>
+      <td><script type="math/tex">f[x_1]=c_{10}</script></td>
+      <td><script type="math/tex">f[x_1,x_1]=c_{11}</script></td>
+      <td><script type="math/tex">f[x_1,x_1,x_2]</script></td>
+      <td><script type="math/tex">f[x_1,x_1,x_2,x_2]</script></td>
+      <td><script type="math/tex">\cdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_1</script></td>
+      <td><script type="math/tex">f[x_1]</script></td>
+      <td><script type="math/tex">f[x_1,x_2]</script></td>
+      <td><script type="math/tex">f[x_1,x_2,x_2]</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_2</script></td>
+      <td><script type="math/tex">f[x_2]=c_{20}</script></td>
+      <td><script type="math/tex">f[x_2,x_2]=c_{21}</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">x_2</script></td>
+      <td><script type="math/tex">f[x_2]</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>E finalmente, montamos o polinômio de Hermite: $$P_{2n+1}(x) = \alpha_0 + \alpha_1(x-x_0) + \alpha_2(x-x_0)^2 + \alpha_3(x-x_0)^2(x-x_1) + \cdots$$. Observe que os termos quadráticos aparecem por causa do maior número de informações presentes em cada ponto.</p>
 
 <h3 id="implementação-1">Implementação</h3>
 
@@ -224,14 +403,20 @@ em que, para cada <script type="math/tex">k = 0, 1, ..., n</script>, $$ L_k(x) =
 <span class="n">y</span> <span class="o">=</span> <span class="nb">diag</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span><span class="o">'</span> <span class="o">*</span> <span class="n">N</span><span class="p">;</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></figure>
 
-<p>bla</p>
+<p>No código em <code class="highlighter-rouge">MatLab</code> acima, é necessário algumas atenções:</p>
+
+<ol>
+  <li>O vetor <code class="highlighter-rouge">z</code> corresponde à primeira coluna da matriz de diferenças divididas, ou seja, <script type="math/tex">x_0, x_0, x_1, x_1, \cdots, x_n, x_n</script> e ele será usado para construção do polinômio de Newton;</li>
+  <li>Ao construirmos a tabela de diferenças divididas, <code class="highlighter-rouge">Q</code>, temos que tomar cuidado com a indiciação utilizada;</li>
+  <li>Na nossa implementação, a matriz “desce”, ao invés de “se manter no topo”, como mostrado na teoria. Por isso que o polinômio de Newton é multiplicado pela diagonal de <code class="highlighter-rouge">Q</code>.</li>
+</ol>
 
 <h2 id="interpolação-por-partes">Interpolação por partes</h2>
-<p>Os métodos apresentados anteriormente conseguem encontrar uma interpolação para os pontos dados utilizando apenas um polinômio. Entretanto, caso haja muitos pontos a serem interpolados, o grau do polinômio aumenta e isso pode criar efeitos oscilatórios indesejados.</p>
+<p>Os métodos apresentados anteriormente conseguem encontrar uma interpolação para os pontos dados utilizando apenas um polinômio. Entretanto, caso haja muitos pontos a serem interpolados, o grau do polinômio aumenta e isso pode criar efeitos oscilatórios indesejados (fenômeno de Runge).</p>
 
 <figure class="bad-poly"> </figure>
 
-<p>Uma alternativa para tentar contornar esse problema é criar polinômios interpoladores utilizando subintervalos.</p>
+<p>Uma alternativa para tentar contornar esse problema é criar polinômios interpoladores utilizando subintervalos. Para isso é necessário tomar o cuidado de manter o polinômio contínuo e suave dentro dos subintervalos.</p>
 
 <h3 id="splines-lineares">Splines lineares</h3>
 
@@ -311,7 +496,7 @@ d3.csv("/voronowledge/assets/data/interpolation.csv",
                     <div id="post-footer">
                         <div class="post-footer-avatar">
                             <!-- <a class="icon fa-5x fa-user"> </a> -->
-                            <img src="/voronowledge/assets/images/pic01.jpg" class="post-footer-avatar">
+                            <img src="/voronowledge/assets/images/rnakanishi-profile.jpg" class="post-footer-avatar">
                         </div>
                         <div class="post-footer-summary">
                             <h2>RNakanishi</h2>
@@ -319,7 +504,9 @@ d3.csv("/voronowledge/assets/data/interpolation.csv",
                             <p>PhD. candidate at ICMC-USP</p>
                         </div>
                         <div class="post-footer-headline">
-                            <p> <p>I love cakes. A lot.</p>
+                            <p> <p>A big dreamer aiming for a place where programming and computer graphics can live together in harmony.</p>
+
+<p>And I love cakes. A lot.</p>
 </p>
                             <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
                         </div>
@@ -336,6 +523,7 @@ d3.csv("/voronowledge/assets/data/interpolation.csv",
 <h2 id="interpolação-de-hermite"><a href="#interpolação-de-hermite">Interpolação de Hermite</a></h2>
 <h3 id="diferenças-divididas"><a href="#diferenças-divididas">Diferenças divididas</a></h3>
 <h3 id="polinômios-de-newton"><a href="#polinômios-de-newton">Polinômios de Newton</a></h3>
+<h3 id="interpolação-com-derivadas"><a href="#interpolação-com-derivadas">Interpolação com derivadas</a></h3>
 <h2 id="interpolação-por-partes"><a href="#interpolação-por-partes">Interpolação por partes</a></h2>
 <h3 id="splines"><a href="#splines">Splines</a></h3>
 <h3 id="splines-cúbicas"><a href="#splines-cúbicas">Splines cúbicas</a></h3>

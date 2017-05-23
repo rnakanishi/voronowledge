@@ -1,4 +1,389 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="/voronowledge/feed.xml" rel="self" type="application/atom+xml" /><link href="/voronowledge/" rel="alternate" type="text/html" /><updated>2017-05-19T16:15:12-03:00</updated><id>/voronowledge/</id><title type="html">Voronowledge</title><entry><title type="html">A Sparse Paged Grid structure</title><link href="/voronowledge/blog/2017/05/18/spgrid.html" rel="alternate" type="text/html" title="A Sparse Paged Grid structure" /><published>2017-05-18T00:00:00-03:00</published><updated>2017-05-18T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/18/spgrid</id><content type="html" xml:base="/voronowledge/blog/2017/05/18/spgrid.html">&lt;p&gt;&lt;strong&gt;Disclaimer: This paper was originally written by &lt;em&gt;&lt;a href=&quot;http://stanford.edu/~setaluri/&quot; target=&quot;_blank&quot;&gt;Rajsekhar Setaluri&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~aanjneya/&quot; target=&quot;_blank&quot;&gt;Mridul Aanjaneya&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;Sean Bauer&lt;/em&gt; and &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~sifakis/&quot; target=&quot;_blank&quot;&gt;Eftychios Sifakis&lt;/a&gt;&lt;/em&gt;. Originally published on &lt;em&gt;ACM Transactions on Graphics&lt;/em&gt;, 2014.&lt;/strong&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="/voronowledge/feed.xml" rel="self" type="application/atom+xml" /><link href="/voronowledge/" rel="alternate" type="text/html" /><updated>2017-05-23T17:31:09-03:00</updated><id>/voronowledge/</id><title type="html">Voronowledge</title><entry><title type="html">Métodos de interpolação</title><link href="/voronowledge/blog/2017/05/25/interpolation.html" rel="alternate" type="text/html" title="Métodos de interpolação" /><published>2017-05-25T00:00:00-03:00</published><updated>2017-05-25T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/25/interpolation</id><content type="html" xml:base="/voronowledge/blog/2017/05/25/interpolation.html">&lt;p&gt;Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.&lt;/p&gt;
+
+&lt;figure class=&quot;graph-full&quot;&gt; &lt;/figure&gt;
+
+&lt;p class=&quot;graph caption&quot;&gt;A partir dos pontos amostrados, queremos saber o comportamento de uma possível função que passa por tais pontos.&lt;/p&gt;
+
+&lt;p&gt;É possível encontrar vários métodos de interpolação. Em nosso escopo, trataremos dos métodos pioneiros que interpolam a função utilizando todos os pontos dados (&lt;em&gt;interpolação de Lagrange&lt;/em&gt;) e métodos que também conseguem utilizar informação de derivada, quando presente (&lt;em&gt;interpolação de Hermite&lt;/em&gt;) Entretanto, como veremos mais a frente, seu principal problema é que o grau do polinômio gerado cresce com o número de amostras. E isso motiva o uso de métodos que interpolam com menos pontos, mas que conseguem apresentar bons resultados (&lt;em&gt;Splines lineares&lt;/em&gt; e &lt;em&gt;cúbicas&lt;/em&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;polinômios-de-lagrange&quot;&gt;Polinômios de Lagrange&lt;/h2&gt;
+
+&lt;blockquote class=&quot;theorem pt-br&quot;&gt;
+  &lt;p&gt;Sejam &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, ..., x_n&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n+1&lt;/script&gt; pontos distintos e &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; o valor da função nesses pontos. Então existe apenas um polinômio &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; de grau &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; tal que $$P(x_k) = f(x_k)\quad\text{para } k = 0,1,…,n.$$
+Esse polinômio é dado por $$ P(x) = \sum_{k=0}^n f(x_k)L_k(x) $$
+em que, para cada &lt;script type=&quot;math/tex&quot;&gt;k = 0, 1, ..., n&lt;/script&gt;, $$ L_k(x) = \frac{\prod_{i=0, i\neq k}^n (x-x_i)}{\prod_{i=0, i\neq k}^n(x_k-x_i)}. $$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Como pode-se observar, a construção de um polinômio é capaz de aproximar bem a curva desejada. Entretanto, caso a função original não seja polinomial, mas sim de outra natureza (trigonométrica, exponencial, etc), a interpolação gera um erro. É de interesse saber qual a grandeza desse erro para que as estimativas sejam o mais precisas possíveis. Para isso, estima-se um limitante superior para o erro:&lt;/p&gt;
+
+&lt;blockquote class=&quot;theorem pt-br&quot;&gt;
+  &lt;p&gt;Suponha &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, ..., x_n&lt;/script&gt; valores distintos dentro do intervalo &lt;script type=&quot;math/tex&quot;&gt;[a,b]&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;f \in C^{n+1}[a,b]&lt;/script&gt;. Então, para cada &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; no intervalo, existe um valor &lt;script type=&quot;math/tex&quot;&gt;\xi&lt;/script&gt; desconhecido entre os valores &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, ..., x_n&lt;/script&gt; e dentro de &lt;script type=&quot;math/tex&quot;&gt;(a,b)&lt;/script&gt; tal que $$ f(x) = P(x) + \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)(x-x_1)\cdots(x-x_n),$$ com &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; sendo o polinômio interpolador de Lagrange. O termo somado ao polinômio interpolador é o erro de interpolação do método.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;implementação&quot;&gt;Implementação&lt;/h3&gt;
+&lt;p&gt;O código implementado em &lt;code class=&quot;highlighter-rouge&quot;&gt;MatLab&lt;/code&gt; é bem simples e envolve apenas o cálculo do polinômio &lt;script type=&quot;math/tex&quot;&gt;L_k(x)&lt;/script&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-matlab&quot; data-lang=&quot;matlab&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;L&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Polinomio de Lagrange&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Dividendo do produtorio&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;den&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Denominador do produtorio&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;den&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;prod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;prod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;den&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Valor avaliado na interpolacao&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;No código acima, temos que &lt;code class=&quot;highlighter-rouge&quot;&gt;xi&lt;/code&gt; são os pontos de interpolação; &lt;code class=&quot;highlighter-rouge&quot;&gt;yi&lt;/code&gt; são os valores da função que se deseja interpolar, avaliado nos pontos &lt;code class=&quot;highlighter-rouge&quot;&gt;xi&lt;/code&gt;; e &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt; são os pontos que se deseja calcular, obtendo assim, os valores em &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt;.&lt;/p&gt;
+
+&lt;!-- ### Exemplo gráfico
+&lt;figure class=&quot;lagrange&quot;&gt; &lt;/figure&gt; --&gt;
+
+&lt;h2 id=&quot;interpolação-de-hermite&quot;&gt;Interpolação de Hermite&lt;/h2&gt;
+&lt;p&gt;Para construção do polinômio de hermite, é necessário antes apresentar duas ferramentas: diferenças divididas e polinômios de Newton.&lt;/p&gt;
+
+&lt;h3 id=&quot;diferenças-divididas&quot;&gt;Diferenças divididas&lt;/h3&gt;
+
+&lt;blockquote class=&quot;definition pt-br&quot;&gt;
+  &lt;p&gt;Diferenças divididas são definidas recursivamente. Diferenças divididas de ordem-&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;: $$f[x_i] = f(x_i),\quad i=0,1,\cdots,n$$.
+Diferença dividida de ordem-&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;: $$f[x_i, x_{i+1}] = \frac{f[x_{i+1}]-f[x_i]}{x_{i+1}-x_{i}} = \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_{i}}$$.
+Então, uma diferença dividida de ordem-&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;, entre &lt;script type=&quot;math/tex&quot;&gt;x_i, x_{i+1}, \cdots, x_{i+k}&lt;/script&gt;, é definido como: $$f[x_i, x_{i+1}, \cdots, x_{i+k}] = \frac{f[x_{i+1}, x_{i+2}, \cdots, x_{i+k}] - f[x_i, x_{i+1}, \cdots, x_{i+k-1}]}{x_{i+k}-x_i},$$ com &lt;script type=&quot;math/tex&quot;&gt;k = 1,\cdots,n&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;i = 0, 1,\cdots,n-k&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Uma forma mais simples de visualizar as diferenças divididas é montando uma tabela das diferenças:&lt;/p&gt;
+
+&lt;table class=&quot;margin-first&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1,x_2,x_3]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_2,x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1,x_2,x_3]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_3,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_3&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_3]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;polinômios-de-newton&quot;&gt;Polinômios de Newton&lt;/h3&gt;
+&lt;p&gt;O polinômio interpolador na forma de Newton é dada na seguinte forma: $$P_n(x) = \alpha_0 + \alpha_1(x-x_0) + \cdots + \alpha_n(x-x_0)(x-x_1)\cdots(x-x_{n-1}).$$
+E cada coeficiente &lt;script type=&quot;math/tex&quot;&gt;\alpha_k&lt;/script&gt; é determinado utilizando diferenças divididas de ordem &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;:&lt;/p&gt;
+
+&lt;table class=&quot;margin-first&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0] = \alpha_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1] = \alpha_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1,x_2] = \alpha_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;interpolação-com-derivadas&quot;&gt;Interpolação com derivadas&lt;/h3&gt;
+
+&lt;blockquote class=&quot;theorem pt-br&quot;&gt;
+  &lt;p&gt;Seja uma função &lt;script type=&quot;math/tex&quot;&gt;f \in C^n[a,b]&lt;/script&gt; com derivadas contínuas. Dada as condições em cada nó &lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt; como: $$P_m^{(j)} = f^{(j)} = c_{ij}, \quad 0\leq j\leq k_i-1\quad\text{e } 0\leq i\leq n$$ com &lt;script type=&quot;math/tex&quot;&gt;m+1 = \kappa_0+\kappa_1+\cdots+\kappa_n&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\kappa_i&lt;/script&gt; sendo o número de condições em um nó &lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt;, ou seja, informações de derivada fornecidos.
+Então, existe um único polinômio &lt;script type=&quot;math/tex&quot;&gt;P_m(x)&lt;/script&gt; que satisfaz as condições de interpolação de Hermite.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Uma maneira de se obter os coeficientes do polinômio interpolador de Hermite é utilizando a tabela de diferenças divididas e o polinômio na forma de Newton.
+Para montarmos a tabela de diferenças divididas, repetimos os pontos em que a derivada está presente. Nesse caso, temos que $$f[x_k,x_k] = \lim_{h\to 0}\frac{f(x_k+h)-f(x_k)}{(x_k+h)-x_k} = f’(x_k).$$ E no caso geral, $$f[x_{k_1},\cdots,x_{k_m}] = \frac{1}{(m-1)!}f^{(m-1)}(x_k).$$&lt;/p&gt;
+
+&lt;p&gt;Então, Dados &lt;script type=&quot;math/tex&quot;&gt;n+1&lt;/script&gt; pares de pontos e suas derivadas, queremos obter &lt;script type=&quot;math/tex&quot;&gt;P_{2n+1}(x)&lt;/script&gt; que satisfaz todas as condições dadas: $$P_{2n+1}(x_i) = c_{i0},\quad P_{2n+1}’(x_i)=x_{i1},\quad i=0,\cdots,n.$$&lt;/p&gt;
+
+&lt;table class=&quot;margin-first&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;ordem-&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0]=c_{00}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_0]=c_{01}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_0,x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_0,x_1,x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1,x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_0,x_1,x_1,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1]=c_{10}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1,x_1]=c_{11}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1,x_1,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1,x_1,x_2,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\cdots&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_1,x_2,x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_2]=c_{20}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_2,x_2]=c_{21}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;x_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;f[x_2]&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\vdots&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;E finalmente, montamos o polinômio de Hermite: $$P_{2n+1}(x) = \alpha_0 + \alpha_1(x-x_0) + \alpha_2(x-x_0)^2 + \alpha_3(x-x_0)^2(x-x_1) + \cdots$$. Observe que os termos quadráticos aparecem por causa do maior número de informações presentes em cada ponto.&lt;/p&gt;
+
+&lt;h3 id=&quot;implementação-1&quot;&gt;Implementação&lt;/h3&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-matlab&quot; data-lang=&quot;matlab&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;% Matriz de Hermite&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dyi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;...&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;% Completando a matriz&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;...&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% forma de Newton&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,:)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,:)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;No código em &lt;code class=&quot;highlighter-rouge&quot;&gt;MatLab&lt;/code&gt; acima, é necessário algumas atenções:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;O vetor &lt;code class=&quot;highlighter-rouge&quot;&gt;z&lt;/code&gt; corresponde à primeira coluna da matriz de diferenças divididas, ou seja, &lt;script type=&quot;math/tex&quot;&gt;x_0, x_0, x_1, x_1, \cdots, x_n, x_n&lt;/script&gt; e ele será usado para construção do polinômio de Newton;&lt;/li&gt;
+  &lt;li&gt;Ao construirmos a tabela de diferenças divididas, &lt;code class=&quot;highlighter-rouge&quot;&gt;Q&lt;/code&gt;, temos que tomar cuidado com a indiciação utilizada;&lt;/li&gt;
+  &lt;li&gt;Na nossa implementação, a matriz “desce”, ao invés de “se manter no topo”, como mostrado na teoria. Por isso que o polinômio de Newton é multiplicado pela diagonal de &lt;code class=&quot;highlighter-rouge&quot;&gt;Q&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;interpolação-por-partes&quot;&gt;Interpolação por partes&lt;/h2&gt;
+&lt;p&gt;Os métodos apresentados anteriormente conseguem encontrar uma interpolação para os pontos dados utilizando apenas um polinômio. Entretanto, caso haja muitos pontos a serem interpolados, o grau do polinômio aumenta e isso pode criar efeitos oscilatórios indesejados (fenômeno de Runge).&lt;/p&gt;
+
+&lt;figure class=&quot;bad-poly&quot;&gt; &lt;/figure&gt;
+
+&lt;p&gt;Uma alternativa para tentar contornar esse problema é criar polinômios interpoladores utilizando subintervalos. Para isso é necessário tomar o cuidado de manter o polinômio contínuo e suave dentro dos subintervalos.&lt;/p&gt;
+
+&lt;h3 id=&quot;splines-lineares&quot;&gt;Splines lineares&lt;/h3&gt;
+
+&lt;h3 id=&quot;splines-cúbicas&quot;&gt;Splines cúbicas&lt;/h3&gt;
+
+&lt;!-- Necessário para usar o D3 --&gt;
+&lt;script src=&quot;https://d3js.org/d3.v4.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Exemplo teaser de interpoação --&gt;
+&lt;script&gt;
+// Inicializando SVG
+var margin = {top: 20, right: 15, bottom: 30, left: 35},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+var svg = d3.select(&quot;.graph-full&quot;).append(&quot;svg&quot;)
+    .attr(&quot;width&quot;, width+margin.left+margin.right)
+    .attr(&quot;height&quot;, height+margin.top+margin.bottom)
+    .append(&quot;g&quot;).attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
+
+// Definindo eixos
+var x = d3.scaleLinear().domain([0, 4]).range([0, width]);
+var y = d3.scaleLinear().domain([-0.5, 1.2]).range([height, 0]);
+var line = d3.line()
+            .x(function(d) { return x(d.x); })
+            .y(function(d) { return y(d.y); });
+
+svg.append(&quot;g&quot;)
+    .attr(&quot;class&quot;,&quot;axis&quot;)
+    .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+    .call(d3.axisBottom().scale(x));
+
+svg.append(&quot;g&quot;)
+    .attr(&quot;class&quot;,&quot;axis&quot;)
+    .call(d3.axisLeft(y));
+
+// Scatter de pontos
+var data = [
+        {&quot;x&quot;: 0.25, &quot;y&quot;: 0.25},
+        {&quot;x&quot;: 1.00, &quot;y&quot;: 0.47},
+        {&quot;x&quot;: 1.25, &quot;y&quot;: 0.95},
+        {&quot;x&quot;: 1.75, &quot;y&quot;: 0.99},
+        {&quot;x&quot;: 3.10, &quot;y&quot;: 0.15},
+        {&quot;x&quot;: 3.47, &quot;y&quot;: 0.27}
+    ];
+svg.selectAll(&quot;dot&quot;)
+    .data(data)
+  .enter().append(&quot;circle&quot;)
+    .attr(&quot;class&quot;,&quot;curve&quot;)
+    .attr(&quot;r&quot;, 3)
+    .attr(&quot;cx&quot;, function(d,i) { return x(d.x); })
+    .attr(&quot;cy&quot;, function(d) { return y(d.y); })
+
+// Plot de linhas
+d3.csv(&quot;/voronowledge/assets/data/interpolation.csv&quot;,
+    function(interp){
+        interp.forEach( function(d) {
+                d.x = +d.x;
+                d.y = +d.y;
+            });
+
+        svg.append(&quot;path&quot;)
+            .attr(&quot;class&quot;,&quot;curve dashed&quot;)
+            .attr(&quot;d&quot;, line(interp));
+    }
+);
+&lt;/script&gt;
+
+&lt;!-- Exemplo de polinômio de alto grau e as oscilações --&gt;
+&lt;script&gt;
+&lt;/script&gt;</content><author><name>RNakanishi</name></author><category term="interpolation" /><category term="pt-br" /><summary type="html">Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.</summary></entry><entry><title type="html">Tensorial algebra</title><link href="/voronowledge/blog/2017/05/23/tensorial-algebra.html" rel="alternate" type="text/html" title="Tensorial algebra" /><published>2017-05-23T00:00:00-03:00</published><updated>2017-05-23T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/23/tensorial-algebra</id><content type="html" xml:base="/voronowledge/blog/2017/05/23/tensorial-algebra.html">&lt;h2 id=&quot;vectors&quot;&gt;Vectors&lt;/h2&gt;
+
+&lt;h2 id=&quot;index-notation&quot;&gt;Index notation&lt;/h2&gt;
+
+&lt;h2 id=&quot;second-order-tensors&quot;&gt;Second order tensors&lt;/h2&gt;
+
+&lt;h2 id=&quot;fourth-order-tensors&quot;&gt;Fourth order tensors&lt;/h2&gt;</content><author><name>RNakanishi</name></author><category term="continuum-mechanics" /><category term="algebra" /><summary type="html">Vectors</summary></entry><entry><title type="html">A Sparse Paged Grid structure</title><link href="/voronowledge/blog/2017/05/18/spgrid.html" rel="alternate" type="text/html" title="A Sparse Paged Grid structure" /><published>2017-05-18T00:00:00-03:00</published><updated>2017-05-18T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/18/spgrid</id><content type="html" xml:base="/voronowledge/blog/2017/05/18/spgrid.html">&lt;p&gt;&lt;strong&gt;Disclaimer: This paper was originally written by &lt;em&gt;&lt;a href=&quot;http://stanford.edu/~setaluri/&quot; target=&quot;_blank&quot;&gt;Rajsekhar Setaluri&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~aanjneya/&quot; target=&quot;_blank&quot;&gt;Mridul Aanjaneya&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;Sean Bauer&lt;/em&gt; and &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~sifakis/&quot; target=&quot;_blank&quot;&gt;Eftychios Sifakis&lt;/a&gt;&lt;/em&gt;. Originally published on &lt;em&gt;ACM Transactions on Graphics&lt;/em&gt;, 2014.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/quadtree-as-sp.png&quot; alt=&quot;Quadtree as pyramid sparse grid&quot; class=&quot;image right&quot; /&gt;&lt;/p&gt;
 
@@ -118,206 +503,4 @@ For each level of the hierarchy, all cells are guaranteed to exist at the immedi
 \end{eqnarray} %]]&gt;&lt;/script&gt;
 
 &lt;h3 id=&quot;per-face-interpolation&quot;&gt;Per-face interpolation&lt;/h3&gt;
-&lt;p&gt;In a three dimensional example, it is desired to obtain a value at the point &lt;script type=&quot;math/tex&quot;&gt;(\xi_1,\xi_2,\xi_3)&lt;/script&gt;. First, assume the value is in the normal to the &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;-axis. First, the interpolated values &lt;script type=&quot;math/tex&quot;&gt;u_L&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u_R&lt;/script&gt; at the faces are obtained using the previous scheme. And then, a bilinear interpolation is performed: &lt;script type=&quot;math/tex&quot;&gt;u(&lt;/script&gt;(\xi_1,\xi_2,\xi_3)&lt;script type=&quot;math/tex&quot;&gt;) = u_L(1-\xi_1) + u_R\xi_1&lt;/script&gt;.&lt;/p&gt;</content><author><name>RNakanishi</name></author><category term="paper" /><summary type="html">Disclaimer: This paper was originally written by Rajsekhar Setaluri, Mridul Aanjaneya, Sean Bauer and Eftychios Sifakis. Originally published on ACM Transactions on Graphics, 2014.</summary></entry><entry><title type="html">Métodos de interpolação</title><link href="/voronowledge/blog/2017/04/20/interpolation.html" rel="alternate" type="text/html" title="Métodos de interpolação" /><published>2017-04-20T00:00:00-03:00</published><updated>2017-04-20T00:00:00-03:00</updated><id>/voronowledge/blog/2017/04/20/interpolation</id><content type="html" xml:base="/voronowledge/blog/2017/04/20/interpolation.html">&lt;p&gt;Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.&lt;/p&gt;
-
-&lt;figure class=&quot;graph-full&quot;&gt; &lt;/figure&gt;
-
-&lt;p class=&quot;graph caption&quot;&gt;A partir dos pontos amostrados, queremos saber o comportamento de uma possível função que passa por tais pontos.&lt;/p&gt;
-
-&lt;p&gt;É possível encontrar vários métodos de interpolação. Em nosso escopo, trataremos dos métodos pioneiros que interpolam a função utilizando todos os pontos dados (&lt;em&gt;interpolação de Lagrange&lt;/em&gt;) e métodos que também conseguem utilizar informação de derivada, quando presente (&lt;em&gt;interpolação de Hermite&lt;/em&gt;) Entretanto, como veremos mais a frente, seu principal problema é que o grau do polinômio gerado cresce com o número de amostras. E isso motiva o uso de métodos que interpolam com menos pontos, mas que conseguem apresentar bons resultados (&lt;em&gt;Splines lineares&lt;/em&gt; e &lt;em&gt;cúbicas&lt;/em&gt;).&lt;/p&gt;
-
-&lt;h2 id=&quot;polinômios-de-lagrange&quot;&gt;Polinômios de Lagrange&lt;/h2&gt;
-
-&lt;blockquote class=&quot;theorem pt-br&quot;&gt;
-  &lt;p&gt;Sejam &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, ..., x_n&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n+1&lt;/script&gt; pontos distintos e &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; o valor da função nesses pontos. Então existe apenas um polinômio &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; de grau &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; tal que $$P(x_k) = f(x_k)\quad\text{para } k = 0,1,…,n.$$
-Esse polinômio é dado por $$ P(x) = \sum_{k=0}^n f(x_k)L_k(x) $$
-em que, para cada &lt;script type=&quot;math/tex&quot;&gt;k = 0, 1, ..., n&lt;/script&gt;, $$ L_k(x) = \frac{\prod_{i=0, i\neq k}^n (x-x_i)}{\prod_{i=0, i\neq k}^n(x_k-x_i)}. $$&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Como pode-se observar, a construção de um polinômio é capaz de aproximar bem a curva desejada. Entretanto, caso a função original não seja polinomial, mas sim de outra natureza (trigonométrica, exponencial, etc), a interpolação gera um erro. É de interesse saber qual a grandeza desse erro para que as estimativas sejam o mais precisas possíveis. Para isso, estima-se um limitante superior para o erro:&lt;/p&gt;
-
-&lt;blockquote class=&quot;theorem pt-br&quot;&gt;
-  &lt;p&gt;Suponha &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, ..., x_n&lt;/script&gt; valores distintos dentro do intervalo &lt;script type=&quot;math/tex&quot;&gt;[a,b]&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;f \in C^{n+1}[a,b]&lt;/script&gt;. Então, para cada &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; no intervalo, existe um valor &lt;script type=&quot;math/tex&quot;&gt;\xi&lt;/script&gt; desconhecido entre os valores &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, ..., x_n&lt;/script&gt; e dentro de &lt;script type=&quot;math/tex&quot;&gt;(a,b)&lt;/script&gt; tal que $$ f(x) = P(x) + \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)(x-x_1)\cdots(x-x_n),$$ com &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; sendo o polinômio interpolador de Lagrange. O termo somado ao polinômio interpolador é o erro de interpolação do método.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;implementação&quot;&gt;Implementação&lt;/h3&gt;
-&lt;p&gt;O código implementado em &lt;code class=&quot;highlighter-rouge&quot;&gt;MatLab&lt;/code&gt; é bem simples e envolve apenas o cálculo do polinômio &lt;script type=&quot;math/tex&quot;&gt;L_k(x)&lt;/script&gt;:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-matlab&quot; data-lang=&quot;matlab&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;L&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Polinomio de Lagrange&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Dividendo do produtorio&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;den&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Denominador do produtorio&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;den&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;prod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;prod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;den&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% Valor avaliado na interpolacao&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;No código acima, temos que &lt;code class=&quot;highlighter-rouge&quot;&gt;xi&lt;/code&gt; são os pontos de interpolação; &lt;code class=&quot;highlighter-rouge&quot;&gt;yi&lt;/code&gt; são os valores da função que se deseja interpolar, avaliado nos pontos &lt;code class=&quot;highlighter-rouge&quot;&gt;xi&lt;/code&gt;; e &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt; são os pontos que se deseja calcular, obtendo assim, os valores em &lt;code class=&quot;highlighter-rouge&quot;&gt;y&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;exemplo-gráfico&quot;&gt;Exemplo gráfico&lt;/h3&gt;
-&lt;figure class=&quot;lagrange&quot;&gt; &lt;/figure&gt;
-
-&lt;h2 id=&quot;interpolação-de-hermite&quot;&gt;Interpolação de Hermite&lt;/h2&gt;
-&lt;p&gt;Para construção do polinômio de hermite, é necessário antes apresentar duas ferramentas: diferenças divididas e polinômios de Newton.&lt;/p&gt;
-
-&lt;h3 id=&quot;diferenças-divididas&quot;&gt;Diferenças divididas&lt;/h3&gt;
-
-&lt;h3 id=&quot;polinômios-de-newton&quot;&gt;Polinômios de Newton&lt;/h3&gt;
-
-&lt;h3 id=&quot;implementação-1&quot;&gt;Implementação&lt;/h3&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-matlab&quot; data-lang=&quot;matlab&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;% Matriz de Hermite&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dyi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;...&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;% Completando a matriz&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;...&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;% forma de Newton&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,:)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,:)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;diag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;bla&lt;/p&gt;
-
-&lt;h2 id=&quot;interpolação-por-partes&quot;&gt;Interpolação por partes&lt;/h2&gt;
-&lt;p&gt;Os métodos apresentados anteriormente conseguem encontrar uma interpolação para os pontos dados utilizando apenas um polinômio. Entretanto, caso haja muitos pontos a serem interpolados, o grau do polinômio aumenta e isso pode criar efeitos oscilatórios indesejados.&lt;/p&gt;
-
-&lt;figure class=&quot;bad-poly&quot;&gt; &lt;/figure&gt;
-
-&lt;p&gt;Uma alternativa para tentar contornar esse problema é criar polinômios interpoladores utilizando subintervalos.&lt;/p&gt;
-
-&lt;h3 id=&quot;splines-lineares&quot;&gt;Splines lineares&lt;/h3&gt;
-
-&lt;h3 id=&quot;splines-cúbicas&quot;&gt;Splines cúbicas&lt;/h3&gt;
-
-&lt;!-- Necessário para usar o D3 --&gt;
-&lt;script src=&quot;https://d3js.org/d3.v4.min.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- Exemplo teaser de interpoação --&gt;
-&lt;script&gt;
-// Inicializando SVG
-var margin = {top: 20, right: 15, bottom: 30, left: 35},
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
-var svg = d3.select(&quot;.graph-full&quot;).append(&quot;svg&quot;)
-    .attr(&quot;width&quot;, width+margin.left+margin.right)
-    .attr(&quot;height&quot;, height+margin.top+margin.bottom)
-    .append(&quot;g&quot;).attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);
-
-// Definindo eixos
-var x = d3.scaleLinear().domain([0, 4]).range([0, width]);
-var y = d3.scaleLinear().domain([-0.5, 1.2]).range([height, 0]);
-var line = d3.line()
-            .x(function(d) { return x(d.x); })
-            .y(function(d) { return y(d.y); });
-
-svg.append(&quot;g&quot;)
-    .attr(&quot;class&quot;,&quot;axis&quot;)
-    .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
-    .call(d3.axisBottom().scale(x));
-
-svg.append(&quot;g&quot;)
-    .attr(&quot;class&quot;,&quot;axis&quot;)
-    .call(d3.axisLeft(y));
-
-// Scatter de pontos
-var data = [
-        {&quot;x&quot;: 0.25, &quot;y&quot;: 0.25},
-        {&quot;x&quot;: 1.00, &quot;y&quot;: 0.47},
-        {&quot;x&quot;: 1.25, &quot;y&quot;: 0.95},
-        {&quot;x&quot;: 1.75, &quot;y&quot;: 0.99},
-        {&quot;x&quot;: 3.10, &quot;y&quot;: 0.15},
-        {&quot;x&quot;: 3.47, &quot;y&quot;: 0.27}
-    ];
-svg.selectAll(&quot;dot&quot;)
-    .data(data)
-  .enter().append(&quot;circle&quot;)
-    .attr(&quot;class&quot;,&quot;curve&quot;)
-    .attr(&quot;r&quot;, 3)
-    .attr(&quot;cx&quot;, function(d,i) { return x(d.x); })
-    .attr(&quot;cy&quot;, function(d) { return y(d.y); })
-
-// Plot de linhas
-d3.csv(&quot;/voronowledge/assets/data/interpolation.csv&quot;,
-    function(interp){
-        interp.forEach( function(d) {
-                d.x = +d.x;
-                d.y = +d.y;
-            });
-
-        svg.append(&quot;path&quot;)
-            .attr(&quot;class&quot;,&quot;curve dashed&quot;)
-            .attr(&quot;d&quot;, line(interp));
-    }
-);
-&lt;/script&gt;
-
-&lt;!-- Exemplo de polinômio de alto grau e as oscilações --&gt;
-&lt;script&gt;
-&lt;/script&gt;</content><author><name>RNakanishi</name></author><category term="interpolation" /><category term="pt-br" /><summary type="html">Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.</summary></entry></feed>
+&lt;p&gt;In a three dimensional example, it is desired to obtain a value at the point &lt;script type=&quot;math/tex&quot;&gt;(\xi_1,\xi_2,\xi_3)&lt;/script&gt;. First, assume the value is in the normal to the &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;-axis. First, the interpolated values &lt;script type=&quot;math/tex&quot;&gt;u_L&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u_R&lt;/script&gt; at the faces are obtained using the previous scheme. And then, a bilinear interpolation is performed: &lt;script type=&quot;math/tex&quot;&gt;u(&lt;/script&gt;(\xi_1,\xi_2,\xi_3)&lt;script type=&quot;math/tex&quot;&gt;) = u_L(1-\xi_1) + u_R\xi_1&lt;/script&gt;.&lt;/p&gt;</content><author><name>RNakanishi</name></author><category term="paper" /><summary type="html">Disclaimer: This paper was originally written by Rajsekhar Setaluri, Mridul Aanjaneya, Sean Bauer and Eftychios Sifakis. Originally published on ACM Transactions on Graphics, 2014.</summary></entry></feed>

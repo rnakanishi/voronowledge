@@ -49,13 +49,17 @@ pre>code {
 }
 
 .highlight table td {
+    margin: auto;
     padding: 5px;
+    text-align: left;
 }
 
 .highlight table td.gutter {
+    margin: auto;
     border-right: solid 1px #555;
     color: #a0a0a0;
     padding: 5px;
+    text-align: left;
 }
 
 .highlight table pre {
