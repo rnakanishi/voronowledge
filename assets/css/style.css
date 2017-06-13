@@ -412,6 +412,8 @@ header {
 
 li {
     margin: auto;
+    padding-left: 3em;
+    padding-right: 3.5em;
 }
 
 ul {
@@ -422,4 +424,13 @@ ul {
 ol {
     list-style-position: inside;
     list-style-type: decimal;
+}
+
+.bottom-line > tbody,
+.bottom-line > thead {
+    border-bottom: 1px solid;
+}
+
+.bottom-line > thead {
+    border-top: 1px solid;
 }

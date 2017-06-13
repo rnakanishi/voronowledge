@@ -1,7 +1,7 @@
 ---
 layout: right-sidebar
 title:  Métodos de interpolação
-tags: [interpolation, pt-br]
+tags: [interpolation, numerical-methods, pt-br]
 summary: (pt-BR) Lagrange, Hermite and Spline interpolation methods.
 author: RNakanishi
 date: 2017-05-25

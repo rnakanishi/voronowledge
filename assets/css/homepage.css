@@ -344,44 +344,36 @@
     width: 75%;
 }
 
-#main .sidebar-right .right-content h1 {
-    font-family: "Raleway";
-}
-
-#main .sidebar-right .right-content:before {
-    border-left: 1px solid;
-}
-
-#main .sidebar-right .right-content h2 {
-    font-family: "Raleway";
-    font-size: 14pt;
-    margin-left: 1em;
-}
-
-#main .sidebar-right .right-content h3 {
-    font-family: "Raleway";
-    font-size: 12pt;
-    margin-left: 2em;
-}
-
+#main .sidebar-right .right-content h1,
 #main .sidebar-left .left-content h1 {
     font-family: "Raleway";
 }
 
+#main .sidebar-right .right-content:before,
 #main .sidebar-left .left-content:before {
     border-left: 1px solid;
 }
 
-#main .sidebar-left .left-content h2 {
+#main .sidebar-right .right-content h2,
+#main .sidebar-left .left-content h2  {
     font-family: "Raleway";
     font-size: 14pt;
     margin-left: 1em;
 }
 
-#main .sidebar-left .left-content h3 {
+#main .sidebar-right .right-content h3,
+#main .sidebar-left .left-content h3{
     font-family: "Raleway";
     font-size: 12pt;
     margin-left: 2em;
+}
+
+#main .sidebar-right .right-content h4,
+#main .sidebar-left .left-content h4 {
+    font-family: "Raleway";
+    font-size: 12pt;
+    font-style: italic;
+    margin-left: 3.5em;
 }
 
 #sidebar {
