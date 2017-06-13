@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1">
+        <meta name="viewport" content="user-scalable=yes,width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <script src="assets/js/util.js"></script> -->
+
+        <title> Voronowledge </title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+        <link rel="shortcut icon" href="/voronowledge/assets/images/favicon.ico" type="image/x-icon" />
+        <!-- <link rel="stylesheet" href="/voronowledge/assets/css/voro.css" /> -->
+        <link rel="stylesheet" href="/voronowledge/assets/css/media.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/homepage.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/style.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/icons.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/syntax.css" />
+        <link rel="stylesheet" href="/voronowledge/assets/css/graph.css" />
+    </head>
+
+
+<body>
+    <div id="banner-common">
+        <div id="common">
+            <div id="voronoi-graph"></div>
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="/voronowledge/assets/js/voronoi.js"></script>
+            <div class="row">
+
+    <span class="pennant">
+        <a href="/voronowledge/index.html">
+        <img src="/voronowledge/assets/images/voronowledge-logo.png" alt="Voronowledge logo">
+        <h1>Voronowledge</h1>
+        </a>
+    </span>
+</div>
+
+<div class="navbar">
+    <nav class="nav">
+        <ul>
+            <li><a href="/voronowledge/index.html">Home</a></li>
+            <li  class="dropdown"><a href="/voronowledge/blog/">Posts</a>
+                <div class="dropdown-content">
+                    
+                    
+                    
+                        <a href="/voronowledge/archives/tag/interpolation.html">Interpolation</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/numerical-methods.html">Numerical methods</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/paper.html">Paper</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                        <a href="/voronowledge/archives/tag/pt-br.html">Pt br</a>
+                    <!-- <a href="#">Test</a> -->
+                    <!-- <a href="#">Test</a> -->
+                    
+                </div>
+            </li>
+            <!-- <li class="dropdown"><a href="/voronowledge/blog.html">Dropdown</a>
+                <span>
+                    <ul class="dropdown-content">
+                        <li><a>Lorem ipsum dolor</a></li>
+                        <li><a>Phasellus consequat</a></li>
+                        <li><a>Magna phasellus</a></li>
+                        <li><a>Etiam dolore nisl</a></li>
+                        <li><a>Veroeros feugiat</a></li>
+                    </ul>
+                </span>
+            </li> -->
+            <!-- <li><a href="/voronowledge/index.html">Portfolio</a></li> -->
+            <li><a href="/voronowledge/about.html">About</a></li>
+        </ul>
+    </nav>
+</div>
+
+        </div>
+    </div>
+
+    <div id="page">
+        <div id="main">
+            <div class="sidebar-right">
+                <div class="left-content">
+                    <header class="main">
+                        <h1> Integração numérica </h1> 
+                        <h3>By RNakanishi</h3> 
+                        <br>
+                        <ul class="tags-list">
+                            
+                            <li class="tag"><strong>Tags: </strong></li>
+                             
+                            <a class="tag-button" href="/voronowledge/archives/tag/numerical-methods.html">Numerical methods</a> 
+                            <a class="tag-button" href="/voronowledge/archives/tag/pt-br.html">Pt br</a> 
+                        </ul>
+                    </header>
+
+                    <section class="blog">
+                        <p>O objetivo dos métodos de integração numérica é encontrar a área abaixo da curva da função que se deseja interpolar. Ou seja, dado uma função real <script type="math/tex">f \in C[a,b]</script> queremos calcular $$\int^b_a f(x)dx$$. Observe que:</p>
+
+<ol>
+  <li><script type="math/tex">f(x)</script> pode ser uma função complexa de integrar;</li>
+  <li><script type="math/tex">f(x)</script> pode ser uma função amostrada em tabela.</li>
+</ol>
+
+<h2 id="regra-do-ponto-médio">Regra do ponto médio</h2>
+<p>Para se encontrar um método numérico básico, relembremos uma das propriedades de integrais: um intervalo de integração pode ser subdividido em dois subintervalos, ou seja, dado <script type="math/tex">% <![CDATA[
+a<c<b %]]></script>, podemos fazer: $$\int^b_a f(x)dx = \int^c_a f(x)dx + \int_c^b f(x)dx.$$</p>
+
+<p>Definimos então a regra do ponto médio: dado <script type="math/tex">f(x)\in C[a,b]</script>, e <script type="math/tex">N</script> subintervalos em <script type="math/tex">[a,b]</script> de comprimento <script type="math/tex">h = \frac{b-a}{N}</script> com <script type="math/tex">x_0 = a</script> e <script type="math/tex">x_N = b</script>, temos: $$\int_{x_0}^{x_N} f(x)dx \approx h \sum_{k=1}^N f(\bar{x}_k),$$com <script type="math/tex">\bar{x}_k = \frac{x_{k-1}+x_k}{2}</script>.</p>
+
+<p><img src="/voronowledge/assets/blog-images/integration/midrule.png" alt="Regra do ponto médio" class="image medium" /></p>
+
+<p class="image caption medium">Figura ilustrativa da regra do ponto médio.</p>
+
+<h2 id="quadratura-de-newton-cotes">Quadratura de Newton-Cotes</h2>
+<p>A estratégia adotada pelos métodos de quadratura é tentar encontrar uma aproximação para a integral <script type="math/tex">\int_a^b f(x)dx</script> usando uma combinação linear de valores de f(x): $$\int_a^b f(x)dx \approx \sum_{k=0}^N A_k f(x_k),$$ em que <script type="math/tex">x_k</script> são chamados de pontos de quadratura e <script type="math/tex">A_k</script> são os coeficientes de quadratura.</p>
+
+<p>A integração de Newton-Cotes envolve integrar o polinômio de interpolação <script type="math/tex">P_n(x)</script>. Sejam <script type="math/tex">(n+1)</script> pontos igualmente espaçados, e uma função <script type="math/tex">f: [a,b]\to \mathbb(R)</script> (conhecida ou não), cujos valores nos pontos são conhecidos, <script type="math/tex">y_i = f(x_i)</script>, <script type="math/tex">i = 0, \cdots, n</script>. Pela fórmula de quadratura, temos: $$\int_a^b f(x)dx = \int_{x_0}^{x_n} f(x)dx \approx \int_{x_0}^{x_n} P_n(x)dx = \sum_{k=0}^{n}y_k \int_{x_0}^{x_n}l_k(x)dx.$$ Observe que, o coeficiente de quadratura corresponde à integral do polinômio de Lagrange, <script type="math/tex">A_k = \int_{x_0}^{x_n}l_k(x)dx</script>.
+Realizando uma mudança de variável <script type="math/tex">x = x_0 + th</script>, temos que <script type="math/tex">dx = h dt</script> e quando <script type="math/tex">\begin{cases}x = x_0, t = 0\\x = x_n, t = n\end{cases}</script>. Então, temos $$\int_{x_0}^{x_n}f(x)dx \approx \sum_{k=0}^n y_kh\int_0^n\lambda_k(t)dt = \sum_{k=0}^n y_khC_k^n$$. Observe que $$\lambda_k(t) = \frac{\prod_{i=0,i\neq k}^n(t-i)}{\prod_{i=0,i\neq k}^n(k-i)}.$$</p>
+
+<p><img src="/voronowledge/assets/blog-images/integration/trapezio.png" alt="Regra do trapézio" class="image right" /></p>
+
+<p class="image right caption">Figura ilustrativa da Regra do Trapézio</p>
+
+<h3 id="regra-do-trapezio">Caso <script type="math/tex">n=1</script>: Regra do trapézio</h3>
+<p>Como temos apenas dois pontos de quadratura (<script type="math/tex">x_0</script> e <script type="math/tex">x_1</script>), realizamos a integração nesse intervalo.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+\int_{x_0}^{x_1}f(x)dx &=& \sum_{k=0}^1 y_khC_k^1 \\
+&=& y_0hC_0^1 + y_1hC_1^1
+\end{eqnarray} %]]></script>
+
+<p>Observe que as integrais dos termos <script type="math/tex">C_k^1</script> resultam em <script type="math/tex">C_0^1 = C_1^1 = \frac{1}{2}</script>.</p>
+
+<p>Então, a regra de quadratura para Newton-Cotes com dois pontos (<em>Regra do trapézio</em>) é: $$\int_{x_0}^{x_1}f(x)dx = \frac{h}{2}(y_0+y_1)$$</p>
+
+<p><img src="/voronowledge/assets/blog-images/integration/simpson.png" alt="Regra 1/3 de Simpson" class="image right" /></p>
+
+<p class="image right caption">Figura ilustrativa da Regra 1/3 de Simpson</p>
+
+<h3 id="13-de-simpson">Caso <script type="math/tex">n=2</script>: Regra 1/3 de Simpson</h3>
+<p>Seguindo o raciocínio análogo à regra do trapézio, temos 3 pontos de quadratura (<script type="math/tex">x_0, x_1</script> e <script type="math/tex">x_2</script>).</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+\int_{x_0}^{x_2}f(x)dx &=& \sum_{k=0}^2 y_khC_k^1 \\
+&=& y_0hC_0^2 + y_1hC_1^2 + y_2hC_2^2
+\end{eqnarray} %]]></script>
+
+<p>E realizando a integração dos coeficientes de quadratura, obtemos <script type="math/tex">C_0^2 = C_2^2 = \frac{1}{3}</script> e <script type="math/tex">C_1^2 = \frac{4}{3}.</script> Então temos que a regra de quadratura é: $$\int_{x_0}^{x_2}f(x)dx = \frac{h}{3}(y_0+4y_1+y_2)$$</p>
+
+<h2 id="quadratura-de-gauss">Quadratura de Gauss</h2>
+
+<p>As fórmulas de Newton-Cotes aproximam valores para a integral de <script type="math/tex">f(x)</script> em um intervalo com nós igualmente espaçados. Porém, a generalização das fórmulas pode reduzir a precisão do método. Uma abordagem para encontrar a melhor reta que calcula a área abaixo da curva é utilizando a quadratura de Gauss.</p>
+
+<p>A quadratura de Gauss escolhe nós de maneira ótima, ou seja, o método tenta minimizar o erro de integração escolhendo pontos <script type="math/tex">\xi_0,\cdots,\xi_n\in[a,b]</script> e coeficientes <script type="math/tex">\omega_0,\cdots,\omega_n</script> tais que $$\int_a^b f(x)dx \approx \sum_{k=0}^n \omega_kf(\xi_k).$$
+Para garantir a precisão, assume-se que a melhor escolha fornece um resultado exato quando <script type="math/tex">f\in P_m</script>, em que <script type="math/tex">m</script> é o grau de precisão. Nesse caso, escolhemos <script type="math/tex">m = 2n+1</script>, uma vez que temos <script type="math/tex">2m+2</script> variáveis a serem otimizadas.</p>
+
+<p>Supondo que tenhamos uma função $f$ polinomial, queremos que ela seja exata com <script type="math/tex">n</script> pontos. Então, por substituição dos valores, e resolvendo a integral, chega-se em um sistema que é possível determinar os valores dos pesos <script type="math/tex">\omega_k</script> e <script type="math/tex">\xi_k</script>. Porém, muito comumente é encontrado os valores para essas variáveis já tabelados pelos polinômios de Legendre.</p>
+
+<h3 id="polinômios-de-legendre">Polinômios de Legendre</h3>
+
+<blockquote class="definition">
+  <p><strong>Polinômios ortogonais</strong> são polinômios da família <script type="math/tex">{\phi_0, \phi_1, \cdots, \phi_n, \cdots}</script> definidos em <script type="math/tex">[a,b]</script> com <script type="math/tex">grau(\phi_n)=n</script> (e <script type="math/tex">\phi_0\neq 0</script>), tais que
+$$\langle\phi_m,\phi_n\rangle = \int_a^b W(x)[\phi_m(x)\phi_n(x)]dx = 0\quad \text{se } m\neq n.$$.
+<script type="math/tex">W(x)</script> é positivo e é dita função peso, com <script type="math/tex">W\in C[a,b]</script>.</p>
+</blockquote>
+
+<p>Considerando um intervalo <script type="math/tex">[-1,1]</script> e o produto interno com função peso <script type="math/tex">W(x) = 1</script>, os <em>polinômios de Legendre</em> são gerados pela recursão:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+    \phi_0(x) &=& 1\\
+    \phi_1(x) &=& x\\
+    \phi_{k+1}(x) &=& \frac{2k+1}{k+1}x\phi_k(x) - \frac{k}{k+1}\phi_{k-1}(x)\quad k = 1,2,\cdots
+\end{eqnarray} %]]></script>
+
+<h3 id="quadratura-de-gauss-legendre">Quadratura de Gauss-Legendre</h3>
+<p>A quadratura de Gauss-Legendre envolve determinar as raízes <script type="math/tex">\xi_k</script> de <script type="math/tex">\phi_{n+1}(x)</script> utilizando os polinômios de Legendre e então determinar os pesos para cada raiz. Na prática, os valores de <script type="math/tex">\xi_k</script> e <script type="math/tex">\omega_k</script> são tabelados para cada valor de <script type="math/tex">n</script>:</p>
+
+<table class="bottom-line">
+  <thead>
+    <tr>
+      <th>n</th>
+      <th><script type="math/tex">\xi_k</script></th>
+      <th><script type="math/tex">\omega_k</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><script type="math/tex">\pm</script>0.5773502691</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td>2</td>
+      <td><script type="math/tex">\pm</script>0.7745966692</td>
+      <td>0.555555555</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>0.0</td>
+      <td>0.888888888</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td>3</td>
+      <td><script type="math/tex">\pm</script>0.8611363115</td>
+      <td>0.3478548451</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><script type="math/tex">\pm</script>0.3399810435</td>
+      <td>0.6521451548</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td>4</td>
+      <td><script type="math/tex">\pm</script>0.9061798459</td>
+      <td>0.2369268850</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><script type="math/tex">\pm</script>0.5384693101</td>
+      <td>0.4786286704</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>0.0</td>
+      <td>0.5688888888</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Observe que as quadraturas de Gauss-Legendre são apenas para integrais no intervalo <script type="math/tex">[-1,1]</script>. Para integrar em um intervalo genérico <script type="math/tex">[a,b]</script> é necessário realizar a mudança de intervalos de integração: $$\int_{-a}^{b}f(x)dx = \frac{b-a}{2}\int_{-1}^1f(\frac{(b-a)t+b+a}{2}) dt.$$</p>
+
+                    </section>
+                    <br /><br />
+                    <!-- <hr style="border: 1px dashed #aaa;"> -->
+                    
+                    <div id="post-footer">
+                        <div class="post-footer-avatar">
+                            <!-- <a class="icon fa-5x fa-user"> </a> -->
+                            <img src="/voronowledge/assets/images/rnakanishi-profile.jpg" class="post-footer-avatar">
+                        </div>
+                        <div class="post-footer-summary">
+                            <h2>RNakanishi</h2>
+                            <p>Rafael Umino Nakanishi</p>
+                            <p>PhD. candidate at ICMC-USP</p>
+                        </div>
+                        <div class="post-footer-headline">
+                            <p> <p>A big dreamer aiming for a place where programming and computer graphics can live together in harmony.</p>
+
+<p>And I love cakes. A lot.</p>
+</p>
+                            <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. -->
+                        </div>
+
+                    </div>
+                    
+
+                </div>
+
+                <div class="right-content">
+                    <section id="sidebar">
+                        <h1 id="conteúdo">Conteúdo</h1>
+<h2 id="regra-do-ponto-médio"><a href="#regra-do-ponto-médio">Regra do ponto médio</a></h2>
+<h2 id="quadratura-de-newton-cotes"><a href="quadratura-de-newton-cotes">Quadratura de Newton-Cotes</a></h2>
+<h3 id="regra-do-trapézio"><a href="#regra-do-trapezio">Regra do Trapézio</a></h3>
+<h3 id="regra-13-de-simpson"><a href="#13-de-simpson">Regra 1/3 de Simpson</a></h3>
+<h2 id="quadratura-de-gauss"><a href="#quadratura-de-gauss">Quadratura de Gauss</a></h2>
+<h3 id="polinômios-de-legendre"><a href="#polinômios-de-legendre">Polinômios de Legendre</a></h3>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+    <div class="container">
+
+        <header>
+            <h2>Contact info</h2></header>
+        <p>Developed by FilipeCN and RNakanishi.</p>
+
+        <ul class="contact">
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/FilipeCN"><span>Github FilipeCN</span></a>
+                    <p>FilipeCN</p>
+                </li>
+            
+                <li class="icon"><a class="icon fa-github" target="blank" href="https://github.com/RNakanishi"><span>Github RNakanishi</span></a>
+                    <p>RNakanishi</p>
+                </li>
+            
+            <!-- <li><a class="icon fa-envelope" ><span>Email</span></a></li> -->
+        </ul>
+    </div>
+    <div id="copyright"> © FilipeCN and RNakanishi. All rights reserved. </div>
+</div>
+
+</body>
+
+</html>

@@ -1,4 +1,146 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="/voronowledge/feed.xml" rel="self" type="application/atom+xml" /><link href="/voronowledge/" rel="alternate" type="text/html" /><updated>2017-05-23T17:31:09-03:00</updated><id>/voronowledge/</id><title type="html">Voronowledge</title><entry><title type="html">Métodos de interpolação</title><link href="/voronowledge/blog/2017/05/25/interpolation.html" rel="alternate" type="text/html" title="Métodos de interpolação" /><published>2017-05-25T00:00:00-03:00</published><updated>2017-05-25T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/25/interpolation</id><content type="html" xml:base="/voronowledge/blog/2017/05/25/interpolation.html">&lt;p&gt;Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="/voronowledge/feed.xml" rel="self" type="application/atom+xml" /><link href="/voronowledge/" rel="alternate" type="text/html" /><updated>2017-06-13T17:47:50-03:00</updated><id>/voronowledge/</id><title type="html">Voronowledge</title><entry><title type="html">Integração numérica</title><link href="/voronowledge/blog/2017/06/12/numerical-integration.html" rel="alternate" type="text/html" title="Integração numérica" /><published>2017-06-12T00:00:00-03:00</published><updated>2017-06-12T00:00:00-03:00</updated><id>/voronowledge/blog/2017/06/12/numerical-integration</id><content type="html" xml:base="/voronowledge/blog/2017/06/12/numerical-integration.html">&lt;p&gt;O objetivo dos métodos de integração numérica é encontrar a área abaixo da curva da função que se deseja interpolar. Ou seja, dado uma função real &lt;script type=&quot;math/tex&quot;&gt;f \in C[a,b]&lt;/script&gt; queremos calcular $$\int^b_a f(x)dx$$. Observe que:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; pode ser uma função complexa de integrar;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; pode ser uma função amostrada em tabela.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;regra-do-ponto-médio&quot;&gt;Regra do ponto médio&lt;/h2&gt;
+&lt;p&gt;Para se encontrar um método numérico básico, relembremos uma das propriedades de integrais: um intervalo de integração pode ser subdividido em dois subintervalos, ou seja, dado &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+a&lt;c&lt;b %]]&gt;&lt;/script&gt;, podemos fazer: $$\int^b_a f(x)dx = \int^c_a f(x)dx + \int_c^b f(x)dx.$$&lt;/p&gt;
+
+&lt;p&gt;Definimos então a regra do ponto médio: dado &lt;script type=&quot;math/tex&quot;&gt;f(x)\in C[a,b]&lt;/script&gt;, e &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; subintervalos em &lt;script type=&quot;math/tex&quot;&gt;[a,b]&lt;/script&gt; de comprimento &lt;script type=&quot;math/tex&quot;&gt;h = \frac{b-a}{N}&lt;/script&gt; com &lt;script type=&quot;math/tex&quot;&gt;x_0 = a&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;x_N = b&lt;/script&gt;, temos: $$\int_{x_0}^{x_N} f(x)dx \approx h \sum_{k=1}^N f(\bar{x}_k),$$com &lt;script type=&quot;math/tex&quot;&gt;\bar{x}_k = \frac{x_{k-1}+x_k}{2}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/integration/midrule.png&quot; alt=&quot;Regra do ponto médio&quot; class=&quot;image medium&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;image caption medium&quot;&gt;Figura ilustrativa da regra do ponto médio.&lt;/p&gt;
+
+&lt;h2 id=&quot;quadratura-de-newton-cotes&quot;&gt;Quadratura de Newton-Cotes&lt;/h2&gt;
+&lt;p&gt;A estratégia adotada pelos métodos de quadratura é tentar encontrar uma aproximação para a integral &lt;script type=&quot;math/tex&quot;&gt;\int_a^b f(x)dx&lt;/script&gt; usando uma combinação linear de valores de f(x): $$\int_a^b f(x)dx \approx \sum_{k=0}^N A_k f(x_k),$$ em que &lt;script type=&quot;math/tex&quot;&gt;x_k&lt;/script&gt; são chamados de pontos de quadratura e &lt;script type=&quot;math/tex&quot;&gt;A_k&lt;/script&gt; são os coeficientes de quadratura.&lt;/p&gt;
+
+&lt;p&gt;A integração de Newton-Cotes envolve integrar o polinômio de interpolação &lt;script type=&quot;math/tex&quot;&gt;P_n(x)&lt;/script&gt;. Sejam &lt;script type=&quot;math/tex&quot;&gt;(n+1)&lt;/script&gt; pontos igualmente espaçados, e uma função &lt;script type=&quot;math/tex&quot;&gt;f: [a,b]\to \mathbb(R)&lt;/script&gt; (conhecida ou não), cujos valores nos pontos são conhecidos, &lt;script type=&quot;math/tex&quot;&gt;y_i = f(x_i)&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;i = 0, \cdots, n&lt;/script&gt;. Pela fórmula de quadratura, temos: $$\int_a^b f(x)dx = \int_{x_0}^{x_n} f(x)dx \approx \int_{x_0}^{x_n} P_n(x)dx = \sum_{k=0}^{n}y_k \int_{x_0}^{x_n}l_k(x)dx.$$ Observe que, o coeficiente de quadratura corresponde à integral do polinômio de Lagrange, &lt;script type=&quot;math/tex&quot;&gt;A_k = \int_{x_0}^{x_n}l_k(x)dx&lt;/script&gt;.
+Realizando uma mudança de variável &lt;script type=&quot;math/tex&quot;&gt;x = x_0 + th&lt;/script&gt;, temos que &lt;script type=&quot;math/tex&quot;&gt;dx = h dt&lt;/script&gt; e quando &lt;script type=&quot;math/tex&quot;&gt;\begin{cases}x = x_0, t = 0\\x = x_n, t = n\end{cases}&lt;/script&gt;. Então, temos $$\int_{x_0}^{x_n}f(x)dx \approx \sum_{k=0}^n y_kh\int_0^n\lambda_k(t)dt = \sum_{k=0}^n y_khC_k^n$$. Observe que $$\lambda_k(t) = \frac{\prod_{i=0,i\neq k}^n(t-i)}{\prod_{i=0,i\neq k}^n(k-i)}.$$&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/integration/trapezio.png&quot; alt=&quot;Regra do trapézio&quot; class=&quot;image right&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;image right caption&quot;&gt;Figura ilustrativa da Regra do Trapézio&lt;/p&gt;
+
+&lt;h3 id=&quot;regra-do-trapezio&quot;&gt;Caso &lt;script type=&quot;math/tex&quot;&gt;n=1&lt;/script&gt;: Regra do trapézio&lt;/h3&gt;
+&lt;p&gt;Como temos apenas dois pontos de quadratura (&lt;script type=&quot;math/tex&quot;&gt;x_0&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;x_1&lt;/script&gt;), realizamos a integração nesse intervalo.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\int_{x_0}^{x_1}f(x)dx &amp;=&amp; \sum_{k=0}^1 y_khC_k^1 \\
+&amp;=&amp; y_0hC_0^1 + y_1hC_1^1
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Observe que as integrais dos termos &lt;script type=&quot;math/tex&quot;&gt;C_k^1&lt;/script&gt; resultam em &lt;script type=&quot;math/tex&quot;&gt;C_0^1 = C_1^1 = \frac{1}{2}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Então, a regra de quadratura para Newton-Cotes com dois pontos (&lt;em&gt;Regra do trapézio&lt;/em&gt;) é: $$\int_{x_0}^{x_1}f(x)dx = \frac{h}{2}(y_0+y_1)$$&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/integration/simpson.png&quot; alt=&quot;Regra 1/3 de Simpson&quot; class=&quot;image right&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;image right caption&quot;&gt;Figura ilustrativa da Regra 1/3 de Simpson&lt;/p&gt;
+
+&lt;h3 id=&quot;13-de-simpson&quot;&gt;Caso &lt;script type=&quot;math/tex&quot;&gt;n=2&lt;/script&gt;: Regra 1/3 de Simpson&lt;/h3&gt;
+&lt;p&gt;Seguindo o raciocínio análogo à regra do trapézio, temos 3 pontos de quadratura (&lt;script type=&quot;math/tex&quot;&gt;x_0, x_1&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;x_2&lt;/script&gt;).&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+\int_{x_0}^{x_2}f(x)dx &amp;=&amp; \sum_{k=0}^2 y_khC_k^1 \\
+&amp;=&amp; y_0hC_0^2 + y_1hC_1^2 + y_2hC_2^2
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;E realizando a integração dos coeficientes de quadratura, obtemos &lt;script type=&quot;math/tex&quot;&gt;C_0^2 = C_2^2 = \frac{1}{3}&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;C_1^2 = \frac{4}{3}.&lt;/script&gt; Então temos que a regra de quadratura é: $$\int_{x_0}^{x_2}f(x)dx = \frac{h}{3}(y_0+4y_1+y_2)$$&lt;/p&gt;
+
+&lt;h2 id=&quot;quadratura-de-gauss&quot;&gt;Quadratura de Gauss&lt;/h2&gt;
+
+&lt;p&gt;As fórmulas de Newton-Cotes aproximam valores para a integral de &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; em um intervalo com nós igualmente espaçados. Porém, a generalização das fórmulas pode reduzir a precisão do método. Uma abordagem para encontrar a melhor reta que calcula a área abaixo da curva é utilizando a quadratura de Gauss.&lt;/p&gt;
+
+&lt;p&gt;A quadratura de Gauss escolhe nós de maneira ótima, ou seja, o método tenta minimizar o erro de integração escolhendo pontos &lt;script type=&quot;math/tex&quot;&gt;\xi_0,\cdots,\xi_n\in[a,b]&lt;/script&gt; e coeficientes &lt;script type=&quot;math/tex&quot;&gt;\omega_0,\cdots,\omega_n&lt;/script&gt; tais que $$\int_a^b f(x)dx \approx \sum_{k=0}^n \omega_kf(\xi_k).$$
+Para garantir a precisão, assume-se que a melhor escolha fornece um resultado exato quando &lt;script type=&quot;math/tex&quot;&gt;f\in P_m&lt;/script&gt;, em que &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; é o grau de precisão. Nesse caso, escolhemos &lt;script type=&quot;math/tex&quot;&gt;m = 2n+1&lt;/script&gt;, uma vez que temos &lt;script type=&quot;math/tex&quot;&gt;2m+2&lt;/script&gt; variáveis a serem otimizadas.&lt;/p&gt;
+
+&lt;p&gt;Supondo que tenhamos uma função $f$ polinomial, queremos que ela seja exata com &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; pontos. Então, por substituição dos valores, e resolvendo a integral, chega-se em um sistema que é possível determinar os valores dos pesos &lt;script type=&quot;math/tex&quot;&gt;\omega_k&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;\xi_k&lt;/script&gt;. Porém, muito comumente é encontrado os valores para essas variáveis já tabelados pelos polinômios de Legendre.&lt;/p&gt;
+
+&lt;h3 id=&quot;polinômios-de-legendre&quot;&gt;Polinômios de Legendre&lt;/h3&gt;
+
+&lt;blockquote class=&quot;definition&quot;&gt;
+  &lt;p&gt;&lt;strong&gt;Polinômios ortogonais&lt;/strong&gt; são polinômios da família &lt;script type=&quot;math/tex&quot;&gt;{\phi_0, \phi_1, \cdots, \phi_n, \cdots}&lt;/script&gt; definidos em &lt;script type=&quot;math/tex&quot;&gt;[a,b]&lt;/script&gt; com &lt;script type=&quot;math/tex&quot;&gt;grau(\phi_n)=n&lt;/script&gt; (e &lt;script type=&quot;math/tex&quot;&gt;\phi_0\neq 0&lt;/script&gt;), tais que
+$$\langle\phi_m,\phi_n\rangle = \int_a^b W(x)[\phi_m(x)\phi_n(x)]dx = 0\quad \text{se } m\neq n.$$.
+&lt;script type=&quot;math/tex&quot;&gt;W(x)&lt;/script&gt; é positivo e é dita função peso, com &lt;script type=&quot;math/tex&quot;&gt;W\in C[a,b]&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Considerando um intervalo &lt;script type=&quot;math/tex&quot;&gt;[-1,1]&lt;/script&gt; e o produto interno com função peso &lt;script type=&quot;math/tex&quot;&gt;W(x) = 1&lt;/script&gt;, os &lt;em&gt;polinômios de Legendre&lt;/em&gt; são gerados pela recursão:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{eqnarray}
+    \phi_0(x) &amp;=&amp; 1\\
+    \phi_1(x) &amp;=&amp; x\\
+    \phi_{k+1}(x) &amp;=&amp; \frac{2k+1}{k+1}x\phi_k(x) - \frac{k}{k+1}\phi_{k-1}(x)\quad k = 1,2,\cdots
+\end{eqnarray} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;quadratura-de-gauss-legendre&quot;&gt;Quadratura de Gauss-Legendre&lt;/h3&gt;
+&lt;p&gt;A quadratura de Gauss-Legendre envolve determinar as raízes &lt;script type=&quot;math/tex&quot;&gt;\xi_k&lt;/script&gt; de &lt;script type=&quot;math/tex&quot;&gt;\phi_{n+1}(x)&lt;/script&gt; utilizando os polinômios de Legendre e então determinar os pesos para cada raiz. Na prática, os valores de &lt;script type=&quot;math/tex&quot;&gt;\xi_k&lt;/script&gt; e &lt;script type=&quot;math/tex&quot;&gt;\omega_k&lt;/script&gt; são tabelados para cada valor de &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;:&lt;/p&gt;
+
+&lt;table class=&quot;bottom-line&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;n&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;\xi_k&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;\omega_k&lt;/script&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt;0.5773502691&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt;0.7745966692&lt;/td&gt;
+      &lt;td&gt;0.555555555&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.888888888&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt;0.8611363115&lt;/td&gt;
+      &lt;td&gt;0.3478548451&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt;0.3399810435&lt;/td&gt;
+      &lt;td&gt;0.6521451548&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt;0.9061798459&lt;/td&gt;
+      &lt;td&gt;0.2369268850&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt;0.5384693101&lt;/td&gt;
+      &lt;td&gt;0.4786286704&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.5688888888&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Observe que as quadraturas de Gauss-Legendre são apenas para integrais no intervalo &lt;script type=&quot;math/tex&quot;&gt;[-1,1]&lt;/script&gt;. Para integrar em um intervalo genérico &lt;script type=&quot;math/tex&quot;&gt;[a,b]&lt;/script&gt; é necessário realizar a mudança de intervalos de integração: $$\int_{-a}^{b}f(x)dx = \frac{b-a}{2}\int_{-1}^1f(\frac{(b-a)t+b+a}{2}) dt.$$&lt;/p&gt;</content><author><name>RNakanishi</name></author><category term="numerical-methods" /><category term="pt-br" /><summary type="html">O objetivo dos métodos de integração numérica é encontrar a área abaixo da curva da função que se deseja interpolar. Ou seja, dado uma função real queremos calcular $$\int^b_a f(x)dx$$. Observe que:</summary></entry><entry><title type="html">Métodos de interpolação</title><link href="/voronowledge/blog/2017/05/25/interpolation.html" rel="alternate" type="text/html" title="Métodos de interpolação" /><published>2017-05-25T00:00:00-03:00</published><updated>2017-05-25T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/25/interpolation</id><content type="html" xml:base="/voronowledge/blog/2017/05/25/interpolation.html">&lt;p&gt;Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.&lt;/p&gt;
 
 &lt;figure class=&quot;graph-full&quot;&gt; &lt;/figure&gt;
 
@@ -377,13 +519,7 @@ d3.csv(&quot;/voronowledge/assets/data/interpolation.csv&quot;,
 
 &lt;!-- Exemplo de polinômio de alto grau e as oscilações --&gt;
 &lt;script&gt;
-&lt;/script&gt;</content><author><name>RNakanishi</name></author><category term="interpolation" /><category term="pt-br" /><summary type="html">Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.</summary></entry><entry><title type="html">Tensorial algebra</title><link href="/voronowledge/blog/2017/05/23/tensorial-algebra.html" rel="alternate" type="text/html" title="Tensorial algebra" /><published>2017-05-23T00:00:00-03:00</published><updated>2017-05-23T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/23/tensorial-algebra</id><content type="html" xml:base="/voronowledge/blog/2017/05/23/tensorial-algebra.html">&lt;h2 id=&quot;vectors&quot;&gt;Vectors&lt;/h2&gt;
-
-&lt;h2 id=&quot;index-notation&quot;&gt;Index notation&lt;/h2&gt;
-
-&lt;h2 id=&quot;second-order-tensors&quot;&gt;Second order tensors&lt;/h2&gt;
-
-&lt;h2 id=&quot;fourth-order-tensors&quot;&gt;Fourth order tensors&lt;/h2&gt;</content><author><name>RNakanishi</name></author><category term="continuum-mechanics" /><category term="algebra" /><summary type="html">Vectors</summary></entry><entry><title type="html">A Sparse Paged Grid structure</title><link href="/voronowledge/blog/2017/05/18/spgrid.html" rel="alternate" type="text/html" title="A Sparse Paged Grid structure" /><published>2017-05-18T00:00:00-03:00</published><updated>2017-05-18T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/18/spgrid</id><content type="html" xml:base="/voronowledge/blog/2017/05/18/spgrid.html">&lt;p&gt;&lt;strong&gt;Disclaimer: This paper was originally written by &lt;em&gt;&lt;a href=&quot;http://stanford.edu/~setaluri/&quot; target=&quot;_blank&quot;&gt;Rajsekhar Setaluri&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~aanjneya/&quot; target=&quot;_blank&quot;&gt;Mridul Aanjaneya&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;Sean Bauer&lt;/em&gt; and &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~sifakis/&quot; target=&quot;_blank&quot;&gt;Eftychios Sifakis&lt;/a&gt;&lt;/em&gt;. Originally published on &lt;em&gt;ACM Transactions on Graphics&lt;/em&gt;, 2014.&lt;/strong&gt;&lt;/p&gt;
+&lt;/script&gt;</content><author><name>RNakanishi</name></author><category term="interpolation" /><category term="numerical-methods" /><category term="pt-br" /><summary type="html">Interpolações são métodos utilizados quando se deseja saber o valor desconhecido dentro de um intervalo dado por uma amostra. Como, muitas vezes, não é possível saber qual a função que gera os pontos, utiliza-se de métodos numéricos para se estimá-la. Dessa forma, podemos estimar o comportamento dos demais pontos dentro do intervalo.</summary></entry><entry><title type="html">A Sparse Paged Grid structure</title><link href="/voronowledge/blog/2017/05/18/spgrid.html" rel="alternate" type="text/html" title="A Sparse Paged Grid structure" /><published>2017-05-18T00:00:00-03:00</published><updated>2017-05-18T00:00:00-03:00</updated><id>/voronowledge/blog/2017/05/18/spgrid</id><content type="html" xml:base="/voronowledge/blog/2017/05/18/spgrid.html">&lt;p&gt;&lt;strong&gt;Disclaimer: This paper was originally written by &lt;em&gt;&lt;a href=&quot;http://stanford.edu/~setaluri/&quot; target=&quot;_blank&quot;&gt;Rajsekhar Setaluri&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~aanjneya/&quot; target=&quot;_blank&quot;&gt;Mridul Aanjaneya&lt;/a&gt;&lt;/em&gt;, &lt;em&gt;Sean Bauer&lt;/em&gt; and &lt;em&gt;&lt;a href=&quot;http://pages.cs.wisc.edu/~sifakis/&quot; target=&quot;_blank&quot;&gt;Eftychios Sifakis&lt;/a&gt;&lt;/em&gt;. Originally published on &lt;em&gt;ACM Transactions on Graphics&lt;/em&gt;, 2014.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/voronowledge/assets/blog-images/spgrid/quadtree-as-sp.png&quot; alt=&quot;Quadtree as pyramid sparse grid&quot; class=&quot;image right&quot; /&gt;&lt;/p&gt;
 
